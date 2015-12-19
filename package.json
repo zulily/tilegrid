@@ -1,0 +1,49 @@
+{
+  "name": "tilegrid",
+  "version": "0.1.0",
+  "description": "A almost infinitely scrolling tile display component for variable height and variable width tiles. Works with or without React, Backbone.js and react-datum",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zulily/tilegrid.git"
+  },
+  "keywords": [
+    "tilegrid",
+    "masonry",
+    "card",
+    "list",
+    "react",
+    "backbone",
+    "react-datum"
+  ],
+  "author": "Bee Wilkerson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zulily/tilegrid/issues"
+  },
+  "homepage": "https://github.com/zulily/tilegrid",
+
+  "dependencies": {
+    "backbone": ">=0.9.2",
+    "inflection": "^1.7.2",
+    "jquery": ">=2.0.0",
+    "moment": "^2.10.6",
+    "react": "^0.14.1",
+    "react-bootstrap": "^0.27.3",
+    "react-dom": "^0.14.1",
+    "react-select": "^1.0.0-beta5",
+    "underscore": "^1.8.3"
+  },
+  
+  "peerDependencies": {
+    "jquery": ">=2.0.0",
+    "react": "^0.14.1",
+    "react-dom": "^0.14.1",
+    "backbone": ">=0.9.2",
+    "react-bootstrap": "^0.27.3"
+  },
+
+}
