@@ -1,6 +1,14 @@
 
+var jQueryTilegrid = require('./src/tilegrid')
+var ReactTilegrid = require('./src/tilegridComponent')
+
+if(!(window == null)){
+  window.jQueryTilegrid = jQueryTilegrid;
+  window.ReactTilegrid = ReactTilegrid;
+}
+
 module.exports = {
-  Tilegrid:          require('./src/tilegrid'),
-  ReactTilegrid:     require('./src/tilegridComponent')
+  jQueryTilegrid:    jQueryTilegrid,
+  ReactTilegrid:     ReactTilegrid
 }
 

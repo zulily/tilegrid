@@ -5,11 +5,12 @@ Backbone = require 'backbone'
 $ = require 'jquery'
 _ = require 'underscore'
 
-Th = require '../lib/testHelpers'
+Th = require './lib/testHelpers'
 
 TestExamples = require('bumble-test/testExamples')
+testExamples = new TestExamples()
 
-KITTEN_DATA = require '../lib/kittenData'
+KITTEN_DATA = require './lib/kittenData'
 # the examples expect these to be script tagged in and be available globally
 _.extend global, 
   React: React
@@ -22,6 +23,6 @@ _.extend global,
 
 
 describe 'All examples', ->
-  TestExamples.testAllExamples()
+  testExamples.testAllExamples()
   
     

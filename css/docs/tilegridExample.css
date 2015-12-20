@@ -1,8 +1,8 @@
-body.tilegrid_tilegrid_jsx {
+body.tilegrid_jsx {
   overflow: hidden;
 }
 
-body.tilegrid_tilegrid_jsx .demo-pane {
+body.tilegrid_jsx .demo-pane {
   width: 98%;
   height: calc(100% - 75px);
   overflow: hidden;
@@ -10,52 +10,52 @@ body.tilegrid_tilegrid_jsx .demo-pane {
   margin-left: 12px;
 }
 
-body.tilegrid_tilegrid_jsx .code-pane {
+body.tilegrid_jsx .code-pane {
   height: 75px;
   overflow: auto;
   transition: height 0.15s ease-out
 }
 
-body.tilegrid_tilegrid_jsx .code-pane .more {
+body.tilegrid_jsx .code-pane .more {
   display: inline-block;
 }
 
-body.tilegrid_tilegrid_jsx[data-showmore="code"] .demo-pane .more {
+body.tilegrid_jsx[data-showmore="code"] .demo-pane .more {
   display: inline-block;
 }
 
-body.tilegrid_tilegrid_jsx[data-showmore="code"] .code-pane .more {
+body.tilegrid_jsx[data-showmore="code"] .code-pane .more {
   display: none;
 }
 
-body.tilegrid_tilegrid_jsx[data-showmore="code"] .demo-pane {
+body.tilegrid_jsx[data-showmore="code"] .demo-pane {
   height: 40%;
 }
 
-body.tilegrid_tilegrid_jsx[data-showmore="code"] .code-pane {
+body.tilegrid_jsx[data-showmore="code"] .code-pane {
   height: 57%;
 }
 
-body.tilegrid_tilegrid_jsx #demo {
+body.tilegrid_jsx #demo {
   height: calc(100% - 52px);
 }
 
-body.tilegrid_tilegrid_jsx .demo,
-body.tilegrid_tilegrid_jsx .collection,
-body.tilegrid_tilegrid_jsx .grid {
+body.tilegrid_jsx .demo,
+body.tilegrid_jsx .collection,
+body.tilegrid_jsx .grid {
   height: 100%;
 }
 
-body.tilegrid_tilegrid_jsx .tilegrid-react {
+body.tilegrid_jsx .tilegrid-react {
   height: calc(100% - 24px);
 }
 
-body.tilegrid_tilegrid_jsx .grid {
+body.tilegrid_jsx .grid {
   display: inline-block;
   width: calc(90% - 308px);
 }
 
-body.tilegrid_tilegrid_jsx .preview {
+body.tilegrid_jsx .preview {
   display: inline-block;
   vertical-align: top;
   padding-top: 20px;
@@ -65,16 +65,16 @@ body.tilegrid_tilegrid_jsx .preview {
   overflow: auto;
 }
 
-body.tilegrid_tilegrid_jsx .preview .lazy-image {
+body.tilegrid_jsx .preview .lazy-image {
   min-height: 140px;
   display: inline-block;
 }
 
-body.tilegrid_tilegrid_jsx .preview img {
+body.tilegrid_jsx .preview img {
   width: 100px;
 }
 
-body.tilegrid_tilegrid_jsx .preview .top-right {
+body.tilegrid_jsx .preview .top-right {
   display: inline-block;
   width: calc(100% - 113px);
   vertical-align: top;

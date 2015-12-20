@@ -1,17 +1,19 @@
 
 module.exports = 
   
-  logo: "img/docs/react-datum.logo.png",
+  logo: "img/docs/tilegrid.logo.png",
 
   # these get added to the css linked to the static examples and docs and copied to 
   # docs/css
   styleSheets: [{
-    path: "/css/docs/tilegridExample.css"
+    path: "css/docs/tilegridExample.css"
     media: "screen"
   }]
 
   scripts: [{
-    path: "/test/lib/kittenData.js"
+    path: "test/lib/kittenData.js"
+  },{
+    path: "dist/tilegrid.js"
   }]
   
   apiDocs: {

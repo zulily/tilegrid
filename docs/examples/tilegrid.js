@@ -1,6 +1,7 @@
 "use strict";
 
 var Rd = ReactDatum;
+var Tilegrid = ReactTilegrid;
 
 var KittenModel = Backbone.Model.extend({
   save: function save(attrs, options) {
@@ -33,7 +34,7 @@ var TilegridDisplay = React.createClass({
         { className: "grid" },
         React.createElement(Rd.CollectionStats, { itemDisplayName: "Kittens" }),
         React.createElement(
-          Rd.Tilegrid,
+          Tilegrid,
           null,
           React.createElement(Rd.LazyPhoto, { attr: "imageUrl" }),
           React.createElement(

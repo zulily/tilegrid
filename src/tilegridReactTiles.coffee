@@ -5,8 +5,11 @@ $ = jQuery = require('jquery')
 
 Tilegrid = require('./tilegrid')
 
+# react datum model rerenders our tiles when the model changes and provides the context 'model'
+RdModel = require('react-datum/src/model')
+
 ###
-  this extension of the tilegrid allows the use of ReactComponents as the tile template.
+  this extension of the jquery tilegrid allows the use of ReactComponents as the tile template.
 
   See src/tilegrid for tile grid that can be used as a React component
   from JSX. 
@@ -14,7 +17,7 @@ Tilegrid = require('./tilegrid')
   This class is not exported from index.js for simplicity.  If the user is using react components
   as tiles, why wouldn't they be be using the tilegrid as a React component? maybe wrong about that
 ###
-module.exports = class ReactTilegrid extends Tilegrid
+module.exports = class TilegridReactTiles extends Tilegrid
 
   # extends - adds support for rendering react components
   setTileTemplate: (tileTemplate) =>
@@ -35,9 +38,9 @@ module.exports = class ReactTilegrid extends Tilegrid
   _renderTileTemplate: ($tile, model) =>
     template = @_getTileTemplate($tile, model)
     if @isReactTemplate(template)
-      # Model below is our Model class in src/model.  Tilegrid wraps react tile
+      # Model below is a react-datum Model class.  Tilegrid wraps react tile
       # components in a contextual model object for model associated with this tile
-      element = React.createElement(Model, {'model': model}, template)
+      element = React.createElement(RdModel, {'model': model}, template)
       ReactDom.render(element, $tile[0])
     else
       super

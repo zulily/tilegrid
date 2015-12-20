@@ -63,9 +63,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	var jQueryTilegrid = __webpack_require__(2);
+	var ReactTilegrid = __webpack_require__(6);
+
+	if (!(window == null)) {
+	  window.jQueryTilegrid = jQueryTilegrid;
+	  window.ReactTilegrid = ReactTilegrid;
+	}
+
 	module.exports = {
-	  Tilegrid: __webpack_require__(2),
-	  ReactTilegrid: __webpack_require__(6)
+	  jQueryTilegrid: jQueryTilegrid,
+	  ReactTilegrid: ReactTilegrid
 	};
 
 /***/ },
@@ -750,7 +758,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var MultiSelect, React, ReactDom, SingleSelect, TilegridComponent, TilegridReact,
+	var MultiSelect, React, ReactDom, SingleSelect, TilegridComponent, TilegridReactTiles,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -758,11 +766,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ReactDom = __webpack_require__(8);
 
-	TilegridReact = __webpack_require__(9);
+	TilegridReactTiles = __webpack_require__(9);
 
-	SingleSelect = __webpack_require__(10);
+	SingleSelect = __webpack_require__(12);
 
-	MultiSelect = __webpack_require__(13);
+	MultiSelect = __webpack_require__(15);
 
 	module.exports = TilegridComponent = (function(superClass) {
 	  extend(TilegridComponent, superClass);
@@ -783,7 +791,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  TilegridComponent.defaultProps = {
-	    tilegridClass: TilegridReact,
+	    tilegridClass: TilegridReactTiles,
 	    tileTemplate: null,
 	    tilegridOptions: {},
 	    tilegridSelectionClass: SingleSelect
@@ -847,7 +855,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var $, React, ReactDom, ReactTilegrid, Tilegrid, jQuery,
+	var $, RdModel, React, ReactDom, Tilegrid, TilegridReactTiles, jQuery,
 	  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
@@ -860,9 +868,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	Tilegrid = __webpack_require__(2);
 
+	RdModel = __webpack_require__(10);
+
 
 	/*
-	  this extension of the tilegrid allows the use of ReactComponents as the tile template.
+	  this extension of the jquery tilegrid allows the use of ReactComponents as the tile template.
 
 	  See src/tilegrid for tile grid that can be used as a React component
 	  from JSX. 
@@ -871,28 +881,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	  as tiles, why wouldn't they be be using the tilegrid as a React component? maybe wrong about that
 	 */
 
-	module.exports = ReactTilegrid = (function(superClass) {
-	  extend(ReactTilegrid, superClass);
+	module.exports = TilegridReactTiles = (function(superClass) {
+	  extend(TilegridReactTiles, superClass);
 
-	  function ReactTilegrid() {
+	  function TilegridReactTiles() {
 	    this._cloneTileTemplate = bind(this._cloneTileTemplate, this);
 	    this._getTileTemplate = bind(this._getTileTemplate, this);
 	    this._renderDerenderedPlaceholder = bind(this._renderDerenderedPlaceholder, this);
 	    this._renderTileTemplate = bind(this._renderTileTemplate, this);
 	    this.isReactTemplate = bind(this.isReactTemplate, this);
 	    this.setTileTemplate = bind(this.setTileTemplate, this);
-	    return ReactTilegrid.__super__.constructor.apply(this, arguments);
+	    return TilegridReactTiles.__super__.constructor.apply(this, arguments);
 	  }
 
-	  ReactTilegrid.prototype.setTileTemplate = function(tileTemplate) {
+	  TilegridReactTiles.prototype.setTileTemplate = function(tileTemplate) {
 	    if (this.isReactTemplate(tileTemplate)) {
 	      return this.$tileTemplate = tileTemplate;
 	    } else {
-	      return ReactTilegrid.__super__.setTileTemplate.apply(this, arguments);
+	      return TilegridReactTiles.__super__.setTileTemplate.apply(this, arguments);
 	    }
 	  };
 
-	  ReactTilegrid.prototype.isReactTemplate = function(template) {
+	  TilegridReactTiles.prototype.isReactTemplate = function(template) {
 	    if (template == null) {
 	      template = this._getTileTemplate();
 	    }
@@ -902,45 +912,201 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return _.intersection(['props', 'type', 'key'], _.keys(template)).length === 3 || template.prototype instanceof React.Component;
 	  };
 
-	  ReactTilegrid.prototype._renderTileTemplate = function($tile, model) {
+	  TilegridReactTiles.prototype._renderTileTemplate = function($tile, model) {
 	    var element, template;
 	    template = this._getTileTemplate($tile, model);
 	    if (this.isReactTemplate(template)) {
-	      element = React.createElement(Model, {
+	      element = React.createElement(RdModel, {
 	        'model': model
 	      }, template);
 	      return ReactDom.render(element, $tile[0]);
 	    } else {
-	      return ReactTilegrid.__super__._renderTileTemplate.apply(this, arguments);
+	      return TilegridReactTiles.__super__._renderTileTemplate.apply(this, arguments);
 	    }
 	  };
 
-	  ReactTilegrid.prototype._renderDerenderedPlaceholder = function($tile) {
+	  TilegridReactTiles.prototype._renderDerenderedPlaceholder = function($tile) {
 	    if (this.isReactTemplate()) {
 	      ReactDom.unmountComponentAtNode($tile[0]);
 	    }
-	    return ReactTilegrid.__super__._renderDerenderedPlaceholder.apply(this, arguments);
+	    return TilegridReactTiles.__super__._renderDerenderedPlaceholder.apply(this, arguments);
 	  };
 
-	  ReactTilegrid.prototype._getTileTemplate = function($tile, model) {
+	  TilegridReactTiles.prototype._getTileTemplate = function($tile, model) {
 	    return this.$tileTemplate;
 	  };
 
-	  ReactTilegrid.prototype._cloneTileTemplate = function() {
+	  TilegridReactTiles.prototype._cloneTileTemplate = function() {
 	    if (this.isReactTemplate()) {
 	      return $("<div class='tile'></div>");
 	    } else {
-	      return ReactTilegrid.__super__._cloneTileTemplate.apply(this, arguments);
+	      return TilegridReactTiles.__super__._cloneTileTemplate.apply(this, arguments);
 	    }
 	  };
 
-	  return ReactTilegrid;
+	  return TilegridReactTiles;
 
 	})(Tilegrid);
 
 
 /***/ },
 /* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, ContextualData, Model, React, _,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	React = __webpack_require__(7);
+
+	Backbone = __webpack_require__(5);
+
+	_ = __webpack_require__(3);
+
+	ContextualData = __webpack_require__(11);
+
+	module.exports = Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.displayName = "react-datum.Model";
+
+	  Model.prototype.dataType = Backbone.Model;
+
+	  Model.prototype.contextKey = 'model';
+
+	  Model.propTypes = _.extend({}, ContextualData.propTypes, {
+	    model: React.PropTypes.oneOfType([React.PropTypes.instanceOf(Backbone.Model), React.PropTypes.func]).isRequired
+	  });
+
+	  Model.childContextTypes = _.extend({}, ContextualData.childContextTypes, {
+	    model: React.PropTypes.instanceOf(Backbone.Model)
+	  });
+
+	  return Model;
+
+	})(ContextualData);
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, ContextualData, React, _,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	React = __webpack_require__(7);
+
+	Backbone = __webpack_require__(5);
+
+	_ = __webpack_require__(3);
+
+
+	/*
+	  This is an abstract base class for contextual data components like ReactDatum.Collection 
+	  and ReactDatum.Model that provide a single contextual data element.
+	  
+	  The ReactDatum.ContextualData base class also provides the listener to model or collection
+	  events and rendering of child components on changes.
+	  
+	  You shouldn't need to use this class directly.
+	 */
+
+	module.exports = ContextualData = (function(superClass) {
+	  extend(ContextualData, superClass);
+
+	  function ContextualData() {
+	    return ContextualData.__super__.constructor.apply(this, arguments);
+	  }
+
+
+	  /* you need to override these */
+
+	  ContextualData.prototype.dataType = null;
+
+	  ContextualData.prototype.contextKey = null;
+
+	  ContextualData.propTypes = {
+	    fetch: React.PropTypes.bool,
+	    fetchOptions: React.PropTypes.object
+	  };
+
+	  ContextualData.childContextTypes = {};
+
+	  ContextualData.prototype.getChildContext = function() {
+	    var c;
+	    c = {};
+	    c[this.contextKey] = this.dataItem;
+	    return c;
+	  };
+
+	  ContextualData.prototype.render = function() {
+	    this._initializeDataItem();
+	    return React.createElement("div", {
+	      "className": this.contextKey
+	    }, this.renderContent());
+	  };
+
+	  ContextualData.prototype.renderContent = function() {
+	    return this.props.children;
+	  };
+
+	  ContextualData.prototype.componentWillUnmount = function() {
+	    return this._unbindEvents();
+	  };
+
+	  ContextualData.prototype._initializeDataItem = function() {
+	    if (!this._needsReinitializing()) {
+	      return;
+	    }
+	    this._unbindEvents();
+	    this._setDataItem();
+	    this._bindEvents();
+	    if (this.props.fetch) {
+	      return this.dataItem.fetch(this.props.fetchOptions);
+	    }
+	  };
+
+	  ContextualData.prototype._needsReinitializing = function() {
+	    var truth;
+	    truth = (this.dataItem == null) || this.props[this.contextKey] !== this._lastPropsModel;
+	    this._lastPropsModel = this.props[this.contextKey];
+	    return truth;
+	  };
+
+	  ContextualData.prototype._setDataItem = function() {
+	    if (_.isFunction(this.props[this.contextKey])) {
+	      return this.dataItem = new this.props[this.contextKey]();
+	    } else {
+	      return this.dataItem = this.props[this.contextKey];
+	    }
+	  };
+
+	  ContextualData.prototype._bindEvents = function() {
+	    var ref;
+	    return (ref = this.dataItem) != null ? ref.on('all', this._onDataChanged, this) : void 0;
+	  };
+
+	  ContextualData.prototype._unbindEvents = function() {
+	    var ref;
+	    return (ref = this.dataItem) != null ? ref.off('all', this._onDataChanged) : void 0;
+	  };
+
+	  ContextualData.prototype._onDataChanged = function() {
+	    return this.forceUpdate();
+	  };
+
+	  return ContextualData;
+
+	})(React.Component);
+
+
+/***/ },
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var $, SelectableCollection, SingleSelect, _, jQuery,
@@ -950,9 +1116,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	$ = jQuery = __webpack_require__(4);
 
-	SelectableCollection = __webpack_require__(11);
+	SelectableCollection = __webpack_require__(13);
 
-	__webpack_require__(12);
+	__webpack_require__(14);
 
 
 	/*
@@ -1372,7 +1538,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 11 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var SelectableCollection, _,
@@ -1562,7 +1728,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 12 */
+/* 14 */
 /***/ function(module, exports) {
 
 	
@@ -1618,7 +1784,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 13 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var $, MultiSelect, SingleSelect, _, jQuery,
@@ -1630,7 +1796,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	_ = __webpack_require__(3);
 
-	SingleSelect = __webpack_require__(10);
+	SingleSelect = __webpack_require__(12);
 
 
 	/*
