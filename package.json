@@ -1,6 +1,6 @@
 {
   "name": "tilegrid",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A almost infinitely scrolling tile component with support variable height and width tiles, Backbone.js React and ReactDatum",
   "main": "index.js",
   "scripts": {
