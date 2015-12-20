@@ -1,10 +1,10 @@
 
 _ = require('underscore')
 $ = jQuery = require('jquery')
+SelectableCollection = require('selectable-collection/src/selectableCollection')
 
-require('../lib/jqueryHelpers')
+require('./lib/jqueryHelpers')
 
-SelectableCollection = require('../mixins/SelectableCollection')
 
 ###
   This class implements the methods necessary to connect selections in a Tilegrid widget to a Collection with the
@@ -40,7 +40,7 @@ module.exports = class SingleSelect
 
     @collection = @tilegrid.collection
     unless @collection.hasSelectableCollectionMixin
-      SelectableCollection.mixInto @collection
+      SelectableCollection.applyTo @collection
 
     @initialize()
 

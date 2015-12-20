@@ -4,7 +4,6 @@ ReactDom = require('react-dom')
 $ = jQuery = require('jquery')
 
 Tilegrid = require('./tilegrid')
-Model = require('../model')
 
 ###
   this extension of the tilegrid allows the use of ReactComponents as the tile template.

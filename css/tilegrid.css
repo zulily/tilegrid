@@ -1,0 +1,54 @@
+
+.tilegrid {
+    height: 100%;
+    position: relative;
+    overflow: auto;
+    background-color: #f5f5f5;
+    text-align: center;
+}
+
+.tilegrid .tile {
+    position: relative;
+    display: inline-block;
+    background-color: #ffffff;
+    border-radius: 7px;
+    margin: 3px;
+    padding: 2px;
+    border: 2px solid transparent;
+    vertical-align: top;
+    transition: background-color 0.5s ease;
+}
+
+.tilegrid .tile.selected {
+    background-color: #CADFFF;
+}
+
+.tilegrid .tile.active {
+    border: 2px solid black;
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+input.tilegrid-focus-sink {
+    position: absolute;
+    left: -5000px;
+    width: 10px;
+}
+
+.tilegrid .tilegrid-loading {
+    position: relative;
+    height: 300px;
+    text-align: center;
+    font-size: 18px;
+    padding-top: 100px;
+    background-color: #f5f5f5;
+    color: rgba(128, 128, 128, 0.8);
+}
+
+.tilegrid .disabled {
+    background: -webkit-linear-gradient(50deg, rgba(255, 0, 0, 0.3) 10%,
+    rgba(0, 0, 0, 0.01) 11%, rgba(0, 0, 0, 0.01) 24%, rgba(255, 10, 10, 0.2) 25%, rgba(255, 10, 10, 0.2) 34%,
+    rgba(0, 0, 0, 0.01) 35%, rgba(0, 0, 0, 0.01) 50%, rgba(255, 10, 10, 0.2) 0%, rgba(255, 10, 10, 0.2) 60%,
+    rgba(0, 0, 0, 0.01) 61%, rgba(0, 0, 0, 0.01) 74%, rgba(255, 10, 10, 0.2) 75%, rgba(255, 10, 10, 0.2) 85%,
+    rgba(0, 0, 0, 0.01) 86%);
+}
+

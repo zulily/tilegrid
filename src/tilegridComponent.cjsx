@@ -2,9 +2,9 @@
 React = require('react')
 ReactDom = require('react-dom')
 
-TilegridReact = require('./tilegrid/tilegridReact')
-SingleSelect = require('./tilegrid/singleSelect')
-MultiSelect = require('./tilegrid/multiSelect')
+TilegridReact = require('./reactTilegrid')
+SingleSelect = require('./singleSelect')
+MultiSelect = require('./multiSelect')
 
 
 module.exports = class TilegridComponent extends React.Component

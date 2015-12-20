@@ -1,0 +1,27 @@
+React = require 'react'
+ReactDOM = require 'react-dom'
+ReactTest = require 'react-addons-test-utils'
+Backbone = require 'backbone'
+$ = require 'jquery'
+_ = require 'underscore'
+
+Th = require '../lib/testHelpers'
+
+TestExamples = require('bumble-test/testExamples')
+
+KITTEN_DATA = require '../lib/kittenData'
+# the examples expect these to be script tagged in and be available globally
+_.extend global, 
+  React: React
+  ReactDOM: ReactDOM
+  Backbone: Backbone
+  '_': _
+  '$': $
+  'jQuery': $
+  KITTEN_DATA: KITTEN_DATA
+
+
+describe 'All examples', ->
+  TestExamples.testAllExamples()
+  
+    
