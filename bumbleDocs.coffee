@@ -13,6 +13,9 @@ module.exports =
   scripts: [{
     path: "test/lib/kittenData.js"
   },{
+    # hmmm... this is... awkward. :) BumbleDocs uses us for it's demo viewer and has a special 
+    # case hack to not include it's vendor version of us which is minified and latest stable.
+    # This insures we are testing and debugging the latest version compiled local to this project.
     path: "dist/tilegrid.js"
   }]
   

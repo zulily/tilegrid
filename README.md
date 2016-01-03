@@ -10,12 +10,12 @@ Also compatible with [react-datum](http://zulily.github.io/react-datum/docs/)
 
 The Tilegrid component renders a tile containing it's children for each model in a [Backbone.js] collection.  
 
-- supports single select 
-- supports multi/drag select
-- lazily renders tiles
-- lazily derenders tiles outside the view port
-- supports variable height and width tiles within the same grid
-- supports nested Tilegrid components
+ - supports single select 
+ - supports multi/drag select
+ - lazily renders tiles
+ - lazily derenders tiles outside the view port
+ - supports variable height and width tiles within the same grid
+ - supports nested Tilegrid components
 
  
 simple example using React:

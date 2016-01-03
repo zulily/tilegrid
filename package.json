@@ -1,7 +1,7 @@
 {
   "name": "tilegrid",
   "version": "0.1.1",
-  "description": "A almost infinitely scrolling tile component with support variable height and width tiles, Backbone.js React and ReactDatum",
+  "description": "An almost infinitely scrolling tile component for Backbone.js, React and react-datum",
   "main": "index.js",
   "scripts": {
     "test": "grunt test"
@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "bumble-build": "^0.1.1",
-    "react-addons-test-utils": "^0.14.3"
+    "react-addons-test-utils": "^0.14.3",
+    "react-datum": "^0.2.1"
   }
 }

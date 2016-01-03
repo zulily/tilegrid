@@ -1,4 +1,5 @@
 
+$ = require 'jquery'
 
 ###
   Thanks stackoverflow!   This allows the tilegrid to determine the scroll parent of the tiles
