@@ -38,6 +38,8 @@ module.exports = class Tilegrid
       ignoreViewport: false
       # fn to call to allow hiding of tiles with models that don't pass a particular test
       hideFunction: null
+      # This can be a function or a class name
+      tileWrapperClassNames: ""
 
     @setTileTemplate(@tileTemplate)
 
@@ -350,14 +352,14 @@ module.exports = class Tilegrid
     model = @getItemData(index)
     return false unless model?
     @lastRenderedIndex = index
-    $tile = @_cloneTileTemplate()
+    $tile = @_cloneTileTemplate(model, @options)
     $tile.attr('data-index', index)
     @$loadingIndicator.before $tile
     @renderTile($tile, model)
     return true
 
 
-  _cloneTileTemplate: () =>
+  _cloneTileTemplate: (model, options = {}) =>
     @$tileTemplate.clone()
 
 

@@ -58,10 +58,11 @@ module.exports = class TilegridReactTiles extends Tilegrid
 
 
   # override - normally returns a @$tileTemplate.clone()
-  _cloneTileTemplate: () =>
+  _cloneTileTemplate: (model, options = {}) =>
     # this needs to return a jquery element - it's what get's pushed into the grid and our
     # reactive tile will render into it
     if @isReactTemplate()
-      return $("<div class='tile'></div>")
+      classNames = if (options.tileWrapperClassNames? && (typeof options.tileWrapperClassNames == "function")) then options.tileWrapperClassNames(model) else ""
+      return $("<div class='tile #{classNames}'></div>")
     else
       return super
