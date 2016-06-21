@@ -80,7 +80,8 @@ module.exports = class MultiSelect extends SingleSelect
   # override
   _onTileMouseDown: (evt) =>
     evt.preventDefault()
-    return if $(evt.target).hasClass('no-select')
+    
+    return if $(evt.target).closest(".tile").hasClass('no-select')
 
     method = @_whichMethod(evt)
     $tile = $(evt.target).closest('.tile')

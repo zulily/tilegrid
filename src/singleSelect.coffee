@@ -162,7 +162,7 @@ module.exports = class SingleSelect
   _onTileMouseDown: (evt) =>
     evt.preventDefault()
 
-    return if $(evt.target).hasClass('no-select')
+    return if $(evt.target).closest(".tile").hasClass('no-select')
 
     index = @_getIndexFromEvent(evt)
     if @options.selectOneOnSelected
