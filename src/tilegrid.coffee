@@ -263,17 +263,20 @@ module.exports = class Tilegrid
 
 
   _getGridScrollDims: =>
+    gridOffset = @$tilegrid.offset()
     gridTop = @$tilegrid.scrollTop()
     gridLeft = @$tilegrid.scrollLeft()
     h = @$tilegrid.height()
     w = @$tilegrid.width()
     return {
-      top: gridTop
-      left: gridLeft
-      bottom: gridTop + h
-      right: gridLeft + w
+      top: gridTop + gridOffset.top
+      left: gridLeft + gridOffset.left
+      bottom: gridTop + gridOffset.top + h
+      right: gridLeft + gridOffset.left + w
       height: h
       width: w
+      gridOffsetTop: gridOffset.top
+      gridOffsetLeft: gridOffset.left
     }
 
     
@@ -291,7 +294,7 @@ module.exports = class Tilegrid
     $tiles = @$tilegrid.find('.tile')
     
     $tile = null
-    half = $tiles.length / 2
+    half = Math.floor($tiles.length / 2)
     lastOffset = 0
     while (absHalf = Math.abs(half)) >= 2
       offset = Math.min(Math.max(0, lastOffset + half), $tiles.length - 1)
@@ -300,15 +303,15 @@ module.exports = class Tilegrid
       tileDims = @_getTileDims($tile)
       break if @_isInViewPort(tileDims, gridScrollDims)
       half = Math.floor(absHalf / 2)
-      half *= -1 if tileDims.left > gridScrollDims.width || tileDims.top > gridScrollDims.height
+      half *= -1 if tileDims.left > (gridScrollDims.gridOffsetLeft + gridScrollDims.width) || tileDims.top > (gridScrollDims.gridOffsetTop + gridScrollDims.height)
       lastOffset = offset
             
     return $tile
     
   
   _isInViewPort: (tileDims, gridScrollDims=@_getGridScrollDims()) =>
-    horzVisible =    tileDims.right > 0 && tileDims.left < gridScrollDims.width
-    vertVisible =    tileDims.bottom > 0 && tileDims.top < gridScrollDims.height
+    horzVisible =    tileDims.right > gridScrollDims.gridOffsetLeft && tileDims.left < (gridScrollDims.gridOffsetLeft + gridScrollDims.width)
+    vertVisible =    tileDims.bottom > gridScrollDims.gridOffsetTop && tileDims.top < (gridScrollDims.gridOffsetTop + gridScrollDims.height)
     
     return horzVisible && vertVisible
     
