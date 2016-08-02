@@ -1,12 +1,12 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("_"), require("jQuery"), require("Backbone"), require("React"), require("ReactDOM"));
+		module.exports = factory(require("_"), require("jquery"), require("backbone"), require("react"), require("react-dom"));
 	else if(typeof define === 'function' && define.amd)
-		define(["_", "jQuery", "Backbone", "React", "ReactDOM"], factory);
+		define(["_", "jquery", "backbone", "react", "react-dom"], factory);
 	else if(typeof exports === 'object')
-		exports["Tilegrid"] = factory(require("_"), require("jQuery"), require("Backbone"), require("React"), require("ReactDOM"));
+		exports["Tilegrid"] = factory(require("_"), require("jquery"), require("backbone"), require("react"), require("react-dom"));
 	else
-		root["Tilegrid"] = factory(root["_"], root["jQuery"], root["Backbone"], root["React"], root["ReactDOM"]);
+		root["Tilegrid"] = factory(root["_"], root["jquery"], root["backbone"], root["react"], root["react-dom"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
