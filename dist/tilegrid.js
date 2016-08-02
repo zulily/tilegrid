@@ -1,10 +1,10 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("_"), require("jquery"), require("backbone"), require("react"), require("react-dom"));
+		module.exports = factory(require("_"), require("jQuery"), require("Backbone"), require("React"), require("ReactDOM"));
 	else if(typeof define === 'function' && define.amd)
-		define(["_", "jquery", "backbone", "react", "react-dom"], factory);
+		define(["_", "jQuery", "Backbone", "React", "ReactDOM"], factory);
 	else if(typeof exports === 'object')
-		exports["Tilegrid"] = factory(require("_"), require("jquery"), require("backbone"), require("react"), require("react-dom"));
+		exports["Tilegrid"] = factory(require("_"), require("jQuery"), require("Backbone"), require("React"), require("ReactDOM"));
 	else
 		root["Tilegrid"] = factory(root["_"], root["jQuery"], root["Backbone"], root["React"], root["ReactDOM"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__) {
@@ -439,18 +439,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  Tilegrid.prototype._getGridScrollDims = function() {
-	    var gridLeft, gridTop, h, w;
+	    var gridLeft, gridOffset, gridTop, h, w;
+	    gridOffset = this.$tilegrid.offset();
 	    gridTop = this.$tilegrid.scrollTop();
 	    gridLeft = this.$tilegrid.scrollLeft();
 	    h = this.$tilegrid.height();
 	    w = this.$tilegrid.width();
 	    return {
-	      top: gridTop,
-	      left: gridLeft,
-	      bottom: gridTop + h,
-	      right: gridLeft + w,
+	      top: gridTop + gridOffset.top,
+	      left: gridLeft + gridOffset.left,
+	      bottom: gridTop + gridOffset.top + h,
+	      right: gridLeft + gridOffset.left + w,
 	      height: h,
-	      width: w
+	      width: w,
+	      gridOffsetTop: gridOffset.top,
+	      gridOffsetLeft: gridOffset.left
 	    };
 	  };
 
@@ -471,7 +474,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    $tiles = this.$tilegrid.find('.tile');
 	    $tile = null;
-	    half = $tiles.length / 2;
+	    half = Math.floor($tiles.length / 2);
 	    lastOffset = 0;
 	    while ((absHalf = Math.abs(half)) >= 2) {
 	      offset = Math.min(Math.max(0, lastOffset + half), $tiles.length - 1);
@@ -484,7 +487,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        break;
 	      }
 	      half = Math.floor(absHalf / 2);
-	      if (tileDims.left > gridScrollDims.width || tileDims.top > gridScrollDims.height) {
+	      if (tileDims.left > (gridScrollDims.gridOffsetLeft + gridScrollDims.width) || tileDims.top > (gridScrollDims.gridOffsetTop + gridScrollDims.height)) {
 	        half *= -1;
 	      }
 	      lastOffset = offset;
@@ -497,8 +500,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (gridScrollDims == null) {
 	      gridScrollDims = this._getGridScrollDims();
 	    }
-	    horzVisible = tileDims.right > 0 && tileDims.left < gridScrollDims.width;
-	    vertVisible = tileDims.bottom > 0 && tileDims.top < gridScrollDims.height;
+	    horzVisible = tileDims.right > gridScrollDims.gridOffsetLeft && tileDims.left < (gridScrollDims.gridOffsetLeft + gridScrollDims.width);
+	    vertVisible = tileDims.bottom > gridScrollDims.gridOffsetTop && tileDims.top < (gridScrollDims.gridOffsetTop + gridScrollDims.height);
 	    return horzVisible && vertVisible;
 	  };
 
