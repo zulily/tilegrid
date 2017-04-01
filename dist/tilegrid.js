@@ -1,12 +1,12 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("_"), require("jquery"), require("backbone"), require("react"), require("react-dom"));
+		module.exports = factory(require("underscore"), require("jquery"), require("backbone"), require("react"), require("react-dom"));
 	else if(typeof define === 'function' && define.amd)
-		define(["_", "jquery", "backbone", "react", "react-dom"], factory);
+		define(["underscore", "jquery", "backbone", "react", "react-dom"], factory);
 	else if(typeof exports === 'object')
-		exports["Tilegrid"] = factory(require("_"), require("jquery"), require("backbone"), require("react"), require("react-dom"));
+		exports["Tilegrid"] = factory(require("underscore"), require("jquery"), require("backbone"), require("react"), require("react-dom"));
 	else
-		root["Tilegrid"] = factory(root["_"], root["jquery"], root["backbone"], root["react"], root["react-dom"]);
+		root["Tilegrid"] = factory(root["_"], root["jQuery"], root["Backbone"], root["React"], root["ReactDOM"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -381,6 +381,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    index = this.topRenderIndex;
 	    while (true) {
 	      if (!($tile && $tile.length > 0)) {
+	        this._endOfData();
 	        break;
 	      }
 	      if (index != null) {
@@ -993,13 +994,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  Model.prototype.contextKey = 'model';
 
+	  Model.modelPropType = React.PropTypes.oneOfType([React.PropTypes.instanceOf(Backbone.Model), React.PropTypes.object]);
+
 	  Model.propTypes = _.extend({}, ContextualData.propTypes, {
-	    model: React.PropTypes.oneOfType([React.PropTypes.instanceOf(Backbone.Model), React.PropTypes.func]).isRequired
+	    model: Model.modelPropType.isRequired
 	  });
 
 	  Model.childContextTypes = _.extend({}, ContextualData.childContextTypes, {
-	    model: React.PropTypes.instanceOf(Backbone.Model)
+	    model: Model.modelPropType
 	  });
+
+	  Model.prototype.update = function() {
+	    return Model.__super__.update.apply(this, arguments);
+	  };
 
 	  return Model;
 
@@ -1011,6 +1018,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, ContextualData, React, _,
+	  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -1034,85 +1042,196 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ContextualData = (function(superClass) {
 	  extend(ContextualData, superClass);
 
-	  function ContextualData() {
-	    return ContextualData.__super__.constructor.apply(this, arguments);
-	  }
 
-
-	  /* you need to override these */
+	  /*
+	    This is the class of thing being placed in the context.
+	      ex. `Backbone.Model` or `Backbone.Collection`
+	   */
 
 	  ContextualData.prototype.dataType = null;
+
+
+	  /*
+	   this is the key in @context children should use to access thing
+	    ex. "model"
+	   */
 
 	  ContextualData.prototype.contextKey = null;
 
 	  ContextualData.propTypes = {
 	    fetch: React.PropTypes.bool,
-	    fetchOptions: React.PropTypes.object
+	    fetchOptions: React.PropTypes.object,
+	    placeholder: React.PropTypes.node,
+	    className: React.PropTypes.string,
+	    debouncedUpdate: React.PropTypes.bool,
+	    debounceMs: React.PropTypes.number,
+	    debug: React.PropTypes.bool,
+	    style: React.PropTypes.object
 	  };
 
 	  ContextualData.childContextTypes = {};
 
+	  ContextualData.defaultProps = {
+	    fetch: false,
+	    fetchOptions: {},
+	    placeholder: void 0,
+	    style: {},
+	    debouncedUpdate: true,
+	    debounceMs: 0
+	  };
+
+	  function ContextualData(props) {
+	    this.update = bind(this.update, this);
+	    this.onDataChanged = bind(this.onDataChanged, this);
+	    ContextualData.__super__.constructor.call(this, props);
+	    this.state = {
+	      lastUpdated: null,
+	      collectionOrModel: null
+	    };
+	    this.debouncedUpdate = this.props.debouncedUpdate ? _.debounce(this.update, this.props.debounceMs) : this.update;
+	  }
+
 	  ContextualData.prototype.getChildContext = function() {
 	    var c;
 	    c = {};
-	    c[this.contextKey] = this.dataItem;
+	    c[this.contextKey] = this.state.collectionOrModel;
 	    return c;
 	  };
 
 	  ContextualData.prototype.render = function() {
-	    this._initializeDataItem();
-	    return React.createElement("div", {
-	      "className": this.contextKey
+	    var className;
+	    className = "contextual-data " + this.contextKey;
+	    if (this.props.className != null) {
+	      className += " " + this.props.className;
+	    }
+	    return React.createElement("span", {
+	      "style": _.extend({}, this.props.style),
+	      "className": className
 	    }, this.renderContent());
 	  };
 
 	  ContextualData.prototype.renderContent = function() {
-	    return this.props.children;
+	    if ((this.state.collectionOrModel != null) || this.props.placeholder === void 0) {
+	      return this.props.children;
+	    }
+	    return this.props.placeholder;
 	  };
+
+
+	  /* !pragma coverage-skip-next */
 
 	  ContextualData.prototype.componentWillUnmount = function() {
-	    return this._unbindEvents();
+	    return this.unbindEvents();
 	  };
 
-	  ContextualData.prototype._initializeDataItem = function() {
-	    if (!this._needsReinitializing()) {
+	  ContextualData.prototype.componentWillMount = function() {
+	    return this.initializeCollectionOrModel();
+	  };
+
+
+	  /* !pragma coverage-skip-next */
+
+	  ContextualData.prototype.componentWillReceiveProps = function(newProps) {
+	    this.props = newProps;
+	    return this.initializeCollectionOrModel();
+	  };
+
+
+	  /*
+	    override this model to do a custom fetch method like fetchForUser or some such
+	   */
+
+	  ContextualData.prototype.fetchCollectionOrModel = function() {
+	    return this.state.collectionOrModel.fetch(this.props.fetchOptions);
+	  };
+
+
+	  /*
+	    extend this method to provide additional initialization on the 
+	    thing you provide.  You should probably call super
+	   */
+
+	  ContextualData.prototype.initializeCollectionOrModel = function() {
+	    if (!this.needsReinitializing()) {
 	      return;
 	    }
-	    this._unbindEvents();
-	    this._setDataItem();
-	    this._bindEvents();
-	    if (this.props.fetch) {
-	      return this.dataItem.fetch(this.props.fetchOptions);
+	    this.unbindEvents();
+	    this.setCollectionOrModel();
+	    this.bindEvents();
+	    if (this.props.fetch && (this.state.collectionOrModel != null)) {
+	      return this.fetchCollectionOrModel();
 	    }
 	  };
 
-	  ContextualData.prototype._needsReinitializing = function() {
-	    var truth;
-	    truth = (this.dataItem == null) || this.props[this.contextKey] !== this._lastPropsModel;
-	    this._lastPropsModel = this.props[this.contextKey];
+
+	  /*
+	    override this method to input from somewhere other than the context or props being passed in
+	   */
+
+	  ContextualData.prototype.getInputCollectionOrModel = function() {
+	    return this.props[this.contextKey] || this.context[this.contextKey];
+	  };
+
+
+	  /*
+	    override or extend this method to provide something other than what we recieve
+	   */
+
+	  ContextualData.prototype.getCollectionOrModelToProvide = function() {
+	    return this.getInputCollectionOrModel();
+	  };
+
+
+	  /*
+	    extend this method to provide additional tests to determine if initialization is 
+	    needed.  You should probably extend this method like so:
+	    ```
+	      return super() || this._someOtherTest()
+	    ```
+	   */
+
+	  ContextualData.prototype.needsReinitializing = function() {
+	    var collectionOrModel, truth;
+	    collectionOrModel = this.getCollectionOrModelToProvide();
+	    truth = (this.state.collectionOrModel == null) || collectionOrModel !== this._lastPropsModel;
+	    this._lastPropsModel = collectionOrModel;
 	    return truth;
 	  };
 
-	  ContextualData.prototype._setDataItem = function() {
-	    if (_.isFunction(this.props[this.contextKey])) {
-	      return this.dataItem = new this.props[this.contextKey]();
-	    } else {
-	      return this.dataItem = this.props[this.contextKey];
+	  ContextualData.prototype.setCollectionOrModel = function() {
+	    var collectionOrModel;
+	    collectionOrModel = this.getCollectionOrModelToProvide();
+	    this.setState({
+	      collectionOrModel: collectionOrModel
+	    });
+	    return this.state.collectionOrModel = collectionOrModel;
+	  };
+
+	  ContextualData.prototype.bindEvents = function() {
+	    var ref;
+	    return (ref = this.state.collectionOrModel) != null ? typeof ref.on === "function" ? ref.on('all', this.onDataChanged, this) : void 0 : void 0;
+	  };
+
+	  ContextualData.prototype.unbindEvents = function() {
+	    var ref;
+	    return (ref = this.state.collectionOrModel) != null ? typeof ref.off === "function" ? ref.off('all', this.onDataChanged) : void 0 : void 0;
+	  };
+
+	  ContextualData.prototype.onDataChanged = function() {
+	    return this.debouncedUpdate();
+	  };
+
+	  ContextualData.prototype.update = function() {
+	    if (this.props.debug) {
+	      console.log("ContextualData: update on model", this.state.collectionOrModel);
 	    }
-	  };
-
-	  ContextualData.prototype._bindEvents = function() {
-	    var ref;
-	    return (ref = this.dataItem) != null ? ref.on('all', this._onDataChanged, this) : void 0;
-	  };
-
-	  ContextualData.prototype._unbindEvents = function() {
-	    var ref;
-	    return (ref = this.dataItem) != null ? ref.off('all', this._onDataChanged) : void 0;
-	  };
-
-	  ContextualData.prototype._onDataChanged = function() {
-	    return this.forceUpdate();
+	    this.setState({
+	      lastUpdated: Date.now(),
+	      collectionOrModel: this.getCollectionOrModelToProvide()
+	    });
+	    if (this.props.forceUpdate) {
+	      return this.forceUpdate();
+	    }
 	  };
 
 	  return ContextualData;
@@ -1563,10 +1682,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = SelectableCollection = (function() {
 	  function SelectableCollection() {
-	    this.setActiveModel = bind(this.setActiveModel, this);
 	    this.setActiveModelById = bind(this.setActiveModelById, this);
 	    this.setActiveIndex = bind(this.setActiveIndex, this);
 	    this.getActiveModel = bind(this.getActiveModel, this);
+	    this.setActiveModel = bind(this.setActiveModel, this);
 	    this.selectNone = bind(this.selectNone, this);
 	    this.selectAll = bind(this.selectAll, this);
 	    this.selectModelByIndex = bind(this.selectModelByIndex, this);
@@ -1576,13 +1695,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	  /*
-	    This method is used to mix SelectableCollection features into a Backbone Collection
+	    This method is used to mix SelectableCollection features into a Backbone Collection.
+	    
+	    example:
+	    ```javascript
+	      kittensCollection = new Backbone.Collection()
+	      SelectableCollection.applyTo(kittensCollection)
+	    ```
 	   */
 
 	  SelectableCollection.applyTo = function(collection) {
-	    if (this.hasSelectableCollectionMixin) {
+	    if (collection.hasSelectableCollectionMixin) {
 	      return;
 	    }
+	    collection.hasSelectableCollection = true;
 	    this.warnIfReplacingMethods(collection);
 	    return _.extend(collection, this.prototype);
 	  };
@@ -1598,11 +1724,35 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  SelectableCollection.prototype.hasSelectableCollectionMixin = true;
 
+
+	  /*
+	    Collection instance method that returns an array of selected models
+	   */
+
 	  SelectableCollection.prototype.getSelectedModels = function() {
 	    return _.filter(this.models, function(m) {
 	      return m.selected;
 	    });
 	  };
+
+
+	  /*
+	    Collection instance method that selects a single model.
+	   
+	    The model will be given a `selected` property of true.
+	   
+	    The `selected` argument can be one of:
+	    `true`    - model argument will be selected
+	    `false`   - unselect model
+	    "toggle"` - invert current selected state
+	    
+	    Example: 
+	    ```javascript
+	      myCollection.selectModel(myModel)
+	      console.log(myModel.selected)
+	       * => true
+	    ```
+	   */
 
 	  SelectableCollection.prototype.selectModel = function(model, selected, options) {
 	    if (selected == null) {
@@ -1629,6 +1779,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return model.selected;
 	  };
 
+
+	  /*
+	    Collection instance method that selects a single model by ID.
+	    
+	    collection.get(id) is used to get the model passed to selectModel method.
+	    
+	    See also [selectModel method](#selectModel) for options
+	   */
+
 	  SelectableCollection.prototype.selectModelById = function(id, selected, options) {
 	    if (selected == null) {
 	      selected = true;
@@ -1639,6 +1798,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return this.selectModel(this.get(id), selected, options);
 	  };
 
+
+	  /*
+	    Collection instance method that selects a single model by it's zero based index
+	    in the collection.
+	  
+	    See also [selectModel method](#selectModel) for options
+	   */
+
 	  SelectableCollection.prototype.selectModelByIndex = function(index, selected, options) {
 	    if (selected == null) {
 	      selected = true;
@@ -1648,6 +1815,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    return this.selectModel(this.models[index], selected, options);
 	  };
+
+
+	  /*
+	    Collection instance method that selects all models in the collection.
+	  
+	    A single *selectionsChanged* event is triggered unless options.silent==true
+	   */
 
 	  SelectableCollection.prototype.selectAll = function(options) {
 	    var i, len, model, ref;
@@ -1672,6 +1846,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  };
 
+
+	  /*
+	    Collection instance method that unselects all models.  Also sets activeModel to null.
+	  
+	    A *selectionsChanged* event is triggered unless options.silent==true. 
+	    A *activeModelChanged* event is also fired
+	   */
+
 	  SelectableCollection.prototype.selectNone = function(options) {
 	    var i, len, model, ref;
 	    if (options == null) {
@@ -1690,29 +1872,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	        silent: true
 	      });
 	    }
-	    this.trigger('activeModelChanged', null);
 	    if (!options.silent) {
-	      return this.trigger('selectionsChanged');
+	      this.trigger('selectionsChanged');
 	    }
+	    return this.setActiveModel(null);
 	  };
 
-	  SelectableCollection.prototype.getActiveModel = function() {
-	    return this.activeModel;
-	  };
 
-	  SelectableCollection.prototype.setActiveIndex = function(index, options) {
-	    if (options == null) {
-	      options = {};
-	    }
-	    return this.setActiveModel(this.models[index]);
-	  };
-
-	  SelectableCollection.prototype.setActiveModelById = function(modelId, options) {
-	    if (options == null) {
-	      options = {};
-	    }
-	    return this.setActiveModel(this.get(modelId), options);
-	  };
+	  /*
+	    Collection instance method that sets the current 'active' Model.  Multiple models may be 
+	    selected in the collection, only one model can be 'active'.   The active model is also
+	    selected in the collection if not already selected.  
+	    
+	    SetActiveModel() is an optional feature. Active model can be used, as it is by 
+	    [tilegrid](https://github.com/zulily/tilegrid), to provide both multiple selections and
+	    a single selection within that set (the last tile added to the selections)
+	      
+	    pass in null for model argument to unset active model
+	   */
 
 	  SelectableCollection.prototype.setActiveModel = function(model, options) {
 	    var currentActive;
@@ -1735,6 +1912,43 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!options.silent) {
 	      return this.trigger('activeModelChanged', model);
 	    }
+	  };
+
+
+	  /*
+	    Collection instance method that returns the current active model.
+	   */
+
+	  SelectableCollection.prototype.getActiveModel = function() {
+	    return this.activeModel;
+	  };
+
+
+	  /*
+	    Collection instance method that sets the active model by index in collection.
+	    
+	    see [setActiveModel](#setActiveModel) for options
+	   */
+
+	  SelectableCollection.prototype.setActiveIndex = function(index, options) {
+	    if (options == null) {
+	      options = {};
+	    }
+	    return this.setActiveModel(this.models[index]);
+	  };
+
+
+	  /*
+	    Collection instance method that sets the active model by id in collection.
+	    
+	    see [setActiveModel](#setActiveModel) for options
+	   */
+
+	  SelectableCollection.prototype.setActiveModelById = function(modelId, options) {
+	    if (options == null) {
+	      options = {};
+	    }
+	    return this.setActiveModel(this.get(modelId), options);
 	  };
 
 	  return SelectableCollection;
