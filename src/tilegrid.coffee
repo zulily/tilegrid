@@ -220,7 +220,10 @@ module.exports = class Tilegrid
     $tile = @findTileAt(@topRenderIndex)
     index = @topRenderIndex
     loop
-      break unless $tile && $tile.length > 0
+      unless $tile && $tile.length > 0
+        @_endOfData()
+        break;
+        
       model = @getItemData(index) if index?
       $nextTile = $tile.next('.tile')  # this is way faster than .find(".tile[data-index=...]") for each
       if model?
