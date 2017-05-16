@@ -195,7 +195,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  Tilegrid.prototype.reset = function(options) {
-	    var i, len, ref, tileEl;
+	    var i, len, ref, tileEl, totalItems;
 	    if (options == null) {
 	      options = {};
 	    }
@@ -213,7 +213,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.lastRenderedIndex = -1;
 	      this.$element.find('.tile').remove();
 	    }
-	    if (this.getTotalItems() > 0) {
+	    totalItems = this.getTotalItems();
+	    if (totalItems > 0 && totalItems > this.lastRenderedIndex + 1) {
 	      this.$loadingIndicator.show();
 	    }
 	    return this;

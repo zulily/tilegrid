@@ -85,8 +85,9 @@ module.exports = class Tilegrid
     else
       @lastRenderedIndex = -1
       @$element.find('.tile').remove()
-
-    if @getTotalItems() > 0
+    
+    totalItems = @getTotalItems()
+    if totalItems > 0 && totalItems > @lastRenderedIndex + 1
       @$loadingIndicator.show()
     
     # don't do initial render yet, wait for someone to do initial fetch on collection
