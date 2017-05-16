@@ -17,7 +17,7 @@ var KittenCollection = Backbone.Collection.extend({
 
 var kittenCollection = new KittenCollection(KITTEN_DATA);
 
-// The above is all backbone setup that you would probably do
+// The above is all backbone setup that you would probably do 
 // elsewhere or wouldn't need to do, like stub out model save
 
 // Below is really most of what you need for a basic list
