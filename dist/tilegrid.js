@@ -213,7 +213,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.lastRenderedIndex = -1;
 	      this.$element.find('.tile').remove();
 	    }
-	    this.$loadingIndicator.show();
+	    if (this.getTotalItems() > 0) {
+	      this.$loadingIndicator.show();
+	    }
 	    return this;
 	  };
 
@@ -381,7 +383,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    index = this.topRenderIndex;
 	    while (true) {
 	      if (!($tile && $tile.length > 0)) {
-	        this._endOfData();
 	        break;
 	      }
 	      if (index != null) {
@@ -549,7 +550,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        break;
 	      }
 	    }
-	    if (index >= this.getTotalItems() || appendTileDidFail) {
+	    if (index >= this.getTotalItems()) {
 	      this._endOfData();
 	    }
 	    return typeof options.success === "function" ? options.success() : void 0;
@@ -603,6 +604,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._$tilesByModelId[model.id] = $tile;
 	    model.on("remove", this._onModelRemove);
 	    this._renderTileTemplate($tile, model);
+	    $tile.removeAttr('style');
 	    $tile.toggleClass("selected", model.selected === true);
 	    $tile.addClass("rendered");
 	    $tile.attr('data-id', model.id);
@@ -642,24 +644,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (options == null) {
 	      options = {};
 	    }
-	    return this.$loadingIndicator.hide();
+	    this.$loadingIndicator.hide();
+	    return this.debouncedRefresh();
 	  };
 
 	  Tilegrid.prototype._loadingInWindow = function() {
-	    var inWindow, loadingTop, scrollBottom, scrollHeight, scrollTop;
+	    var inWindow, loadingLeft, loadingTop, outerHeight, outerWidth, scrollBottom, scrollHeight, scrollLeft, scrollRight, scrollTop, scrollWidth;
 	    if (!(this.$element.is(':visible') && this.$loadingIndicator.is(':visible'))) {
 	      return false;
 	    }
-	    if (this.$element.outerHeight() > 5000) {
+	    outerHeight = this.$element.outerHeight();
+	    outerWidth = this.$element.outerWidth();
+	    if (outerHeight > 5000) {
 	      console.error(("dev error: the outer height of the .tilegrid element for " + this.selector + " is saying it's outer height ") + "is greater that 5000.  You need to set the height to something other than auto. ");
 	      scrollHeight = 5000;
 	    } else {
-	      scrollHeight = this.$element.outerHeight();
+	      scrollHeight = outerHeight;
 	    }
+	    scrollWidth = outerWidth > 5000 ? 5000 : outerWidth;
 	    scrollTop = this.$element.scrollTop();
+	    scrollLeft = this.$element.scrollLeft();
 	    scrollBottom = scrollTop + scrollHeight;
+	    scrollRight = scrollLeft + scrollWidth;
 	    loadingTop = this.$loadingIndicator.position().top;
-	    inWindow = loadingTop < scrollBottom + this.options.preloadCushion;
+	    loadingLeft = this.$loadingIndicator.position().left;
+	    inWindow = loadingTop < scrollBottom + this.options.preloadCushion && loadingLeft < scrollRight + this.options.preloadCushion;
 	    return inWindow;
 	  };
 

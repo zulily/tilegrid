@@ -86,7 +86,9 @@ module.exports = class Tilegrid
       @lastRenderedIndex = -1
       @$element.find('.tile').remove()
 
-    @$loadingIndicator.show()
+    if @getTotalItems() > 0
+      @$loadingIndicator.show()
+    
     # don't do initial render yet, wait for someone to do initial fetch on collection
     return @
 
@@ -220,9 +222,7 @@ module.exports = class Tilegrid
     $tile = @findTileAt(@topRenderIndex)
     index = @topRenderIndex
     loop
-      unless $tile && $tile.length > 0
-        @_endOfData()
-        break;
+      break unless $tile && $tile.length > 0
         
       model = @getItemData(index) if index?
       $nextTile = $tile.next('.tile')  # this is way faster than .find(".tile[data-index=...]") for each
@@ -344,7 +344,7 @@ module.exports = class Tilegrid
       if index >= @getTotalItems() || appendTileDidFail
         break;
     
-    @_endOfData() if index >= @getTotalItems() || appendTileDidFail
+    @_endOfData() if index >= @getTotalItems() 
           
     options.success?()
 
@@ -382,6 +382,10 @@ module.exports = class Tilegrid
     model.on "remove", @_onModelRemove
     @_renderTileTemplate($tile, model)
 
+    # we added height and width to this tile when it was derendered, remove them to let tile
+    # size naturally to it's potentially new data
+    $tile.removeAttr('style');
+    
     $tile.toggleClass("selected", model.selected==true)
     $tile.addClass("rendered")
     $tile.attr('data-id', model.id)
@@ -423,6 +427,7 @@ module.exports = class Tilegrid
 
   _endOfData: (options={}) =>
     @$loadingIndicator.hide()
+    @debouncedRefresh()
 
 
   # returns true if loading indicator is visible or nearly
@@ -430,18 +435,28 @@ module.exports = class Tilegrid
     # the effect of this is to hide the loading indicator until we actually start displaying data
     # this will not work (always return true) unless the @$element is visible on the page
     return false unless @$element.is(':visible') && @$loadingIndicator.is(':visible')
+    
+    outerHeight = @$element.outerHeight()
+    outerWidth = @$element.outerWidth()
 
-    if @$element.outerHeight() > 5000
+    if outerHeight> 5000
       console.error "dev error: the outer height of the .tilegrid element for #{@selector} is saying it's outer height " +
           "is greater that 5000.  You need to set the height to something other than auto. "
       scrollHeight = 5000
     else
-      scrollHeight = @$element.outerHeight()
+      scrollHeight = outerHeight
+      
+    scrollWidth = if outerWidth > 5000 then 5000 else outerWidth
+      
     scrollTop = @$element.scrollTop()
+    scrollLeft = @$element.scrollLeft()
     scrollBottom = scrollTop + scrollHeight
+    scrollRight = scrollLeft + scrollWidth
     loadingTop = @$loadingIndicator.position().top
+    loadingLeft = @$loadingIndicator.position().left
 
-    inWindow = loadingTop <  scrollBottom + @options.preloadCushion
+    inWindow = loadingTop <  scrollBottom + @options.preloadCushion && 
+      loadingLeft < scrollRight + @options.preloadCushion
     # console.log @selector, inWindow
     return inWindow
 
