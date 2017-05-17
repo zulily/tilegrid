@@ -170,8 +170,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!(_.isArray(this.data) || this.data instanceof Backbone.Collection)) {
 	      throw "Tilegrid expects @data constructor arg to be either and array or a Collection";
 	    }
-	    this.debouncedRefresh = _.debounce(this.refresh, 10);
-	    this.debouncedRender = _.debounce(this.render, 10);
+	    this.debouncedRefresh = _.debounce(this.refresh, 0);
+	    this.debouncedRender = _.debounce(this.render, 0);
 	    this.initialize();
 	  }
 
