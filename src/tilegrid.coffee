@@ -47,8 +47,8 @@ module.exports = class Tilegrid
     unless _.isArray(@data) || @data instanceof Backbone.Collection
       throw "Tilegrid expects @data constructor arg to be either and array or a Collection"
 
-    @debouncedRefresh = _.debounce(@refresh, 200)
-    @debouncedRender = _.debounce(@render, 200)
+    @debouncedRefresh = _.debounce(@refresh, 10)
+    @debouncedRender = _.debounce(@render, 10)
 
     @initialize()
 
