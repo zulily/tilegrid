@@ -163,7 +163,6 @@ module.exports = class Tilegrid
     @collection ||= @data if @data instanceof Backbone.Collection
     if @collection?
       @collection.on 'reset', @_onCollectionReset
-      @collection.on 'sync', @_onCollectionSync
       @collection.on 'add', @_onCollectionAdd
 
 
@@ -378,6 +377,7 @@ module.exports = class Tilegrid
 
   renderTile: ($tile, model) =>
     return if $tile.hasClass('rendered')
+    $tile.addClass("rendered")
 
     @_$tilesByModelId[model.id] = $tile
     model.on "remove", @_onModelRemove
@@ -388,7 +388,6 @@ module.exports = class Tilegrid
     $tile.removeAttr('style');
     
     $tile.toggleClass("selected", model.selected==true)
-    $tile.addClass("rendered")
     $tile.attr('data-id', model.id)
 
     #Use underscore features in template
@@ -465,10 +464,6 @@ module.exports = class Tilegrid
   _onCollectionReset: () =>
     @reset()
     @render()
-
-
-  _onCollectionSync: () =>
-    @debouncedRefresh()
 
 
   _onCollectionAdd: () =>

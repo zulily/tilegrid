@@ -602,12 +602,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if ($tile.hasClass('rendered')) {
 	      return;
 	    }
+	    $tile.addClass("rendered");
 	    this._$tilesByModelId[model.id] = $tile;
 	    model.on("remove", this._onModelRemove);
 	    this._renderTileTemplate($tile, model);
 	    $tile.removeAttr('style');
 	    $tile.toggleClass("selected", model.selected === true);
-	    $tile.addClass("rendered");
 	    $tile.attr('data-id', model.id);
 	    if ($tile.hasClass('underscore-tile')) {
 	      this.underscroreTemplate || (this.underscroreTemplate = _.template(this.tileTemplate));
