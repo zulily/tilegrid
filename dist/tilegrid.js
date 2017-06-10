@@ -119,7 +119,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._onScroll = bind(this._onScroll, this);
 	    this._onModelRemove = bind(this._onModelRemove, this);
 	    this._onCollectionAdd = bind(this._onCollectionAdd, this);
-	    this._onCollectionSync = bind(this._onCollectionSync, this);
 	    this._onCollectionReset = bind(this._onCollectionReset, this);
 	    this._loadingInWindow = bind(this._loadingInWindow, this);
 	    this._endOfData = bind(this._endOfData, this);
@@ -210,11 +209,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this._derenderTile($(tileEl));
 	      }
 	    } else {
-	      this.lastRenderedIndex = -1;
+	      this.lastAppendedIndex = -1;
 	      this.$element.find('.tile').remove();
 	    }
 	    totalItems = this.getTotalItems();
-	    if (totalItems > 0 && totalItems > this.lastRenderedIndex + 1) {
+	    if (totalItems > 0 && totalItems > this.lastAppendedIndex + 1) {
 	      this.$loadingIndicator.show();
 	    }
 	    return this;
@@ -312,7 +311,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    if (this.collection != null) {
 	      this.collection.on('reset', this._onCollectionReset);
-	      this.collection.on('sync', this._onCollectionSync);
 	      return this.collection.on('add', this._onCollectionAdd);
 	    }
 	  };
@@ -513,7 +511,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (options == null) {
 	      options = {};
 	    }
-	    this.lastRenderedIndex = -1;
+	    this.lastAppendedIndex = -1;
 	    ref1 = ((ref = this.collection) != null ? ref.models : void 0) || this.data;
 	    results = [];
 	    for (i = 0, len = ref1.length; i < len; i++) {
@@ -528,7 +526,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (options == null) {
 	      options = {};
 	    }
-	    first = this.lastRenderedIndex + 1;
+	    first = this.lastAppendedIndex + 1;
 	    last = first + this.options.pageSize;
 	    this.lastFirst = first;
 	    if ((this.collection != null) && _.isFunction(this.collection.ensureRows)) {
@@ -545,10 +543,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (options == null) {
 	      options = {};
 	    }
-	    for (index = i = ref = first, ref1 = last; ref <= ref1 ? i < ref1 : i > ref1; index = ref <= ref1 ? ++i : --i) {
-	      appendTileDidFail = !this.appendTile(index);
-	      if (index >= this.getTotalItems() || appendTileDidFail) {
-	        break;
+	    if (last > this.lastAppendedIndex) {
+	      for (index = i = ref = this.lastAppendedIndex + 1, ref1 = last; ref <= ref1 ? i < ref1 : i > ref1; index = ref <= ref1 ? ++i : --i) {
+	        appendTileDidFail = !this.appendTile();
+	        if (index >= this.getTotalItems() || appendTileDidFail) {
+	          break;
+	        }
 	      }
 	    }
 	    if (index >= this.getTotalItems()) {
@@ -565,18 +565,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return ((ref = this.collection) != null ? typeof ref.getLength === "function" ? ref.getLength() : void 0 : void 0) || ((ref1 = this.collection) != null ? ref1.length : void 0) || this.data.length;
 	  };
 
-	  Tilegrid.prototype.appendTile = function(index) {
-	    var $tile, model;
-	    if (index == null) {
-	      index = this.lastRenderedIndex + 1;
-	    }
+	  Tilegrid.prototype.appendTile = function() {
+	    var $tile, index, model;
+	    index = this.lastAppendedIndex + 1;
 	    model = this.getItemData(index);
 	    if (model == null) {
 	      return false;
 	    }
-	    this.lastRenderedIndex = index;
+	    this.lastAppendedIndex = index;
 	    $tile = this._cloneTileTemplate(model, this.options);
-	    $tile.attr('data-index', index);
+	    $tile.attr('data-index', this.lastAppendedIndex);
 	    this.$loadingIndicator.before($tile);
 	    this.renderTile($tile, model);
 	    return true;
@@ -599,9 +597,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  Tilegrid.prototype.renderTile = function($tile, model) {
-	    if ($tile.hasClass('rendered')) {
-	      return;
-	    }
 	    $tile.addClass("rendered");
 	    this._$tilesByModelId[model.id] = $tile;
 	    model.on("remove", this._onModelRemove);
@@ -676,10 +671,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  Tilegrid.prototype._onCollectionReset = function() {
 	    this.reset();
 	    return this.render();
-	  };
-
-	  Tilegrid.prototype._onCollectionSync = function() {
-	    return this.debouncedRefresh();
 	  };
 
 	  Tilegrid.prototype._onCollectionAdd = function() {

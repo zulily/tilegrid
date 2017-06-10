@@ -83,11 +83,11 @@ module.exports = class Tilegrid
     if options.soft
       @_derenderTile($(tileEl)) for tileEl in @$element.find('.tile')
     else
-      @lastRenderedIndex = -1
+      @lastAppendedIndex = -1
       @$element.find('.tile').remove()
     
     totalItems = @getTotalItems()
-    if totalItems > 0 && totalItems > @lastRenderedIndex + 1
+    if totalItems > 0 && totalItems > @lastAppendedIndex + 1
       @$loadingIndicator.show()
     
     # don't do initial render yet, wait for someone to do initial fetch on collection
@@ -323,12 +323,12 @@ module.exports = class Tilegrid
   # to paginate.
   # - only use this method for very light weight stuff
   renderAllTiles: (options={}) =>
-    @lastRenderedIndex = -1
+    @lastAppendedIndex = -1
     @appendTile() for model in @collection?.models || @data
 
 
   _renderNextPage: (options={}) =>
-    first = @lastRenderedIndex + 1
+    first = @lastAppendedIndex + 1
     last = first + @options.pageSize
     @lastFirst = first
 
@@ -339,10 +339,11 @@ module.exports = class Tilegrid
 
   
   _onEnsureComplete: (first, last, options={}) =>
-    for index in [first...last]
-      appendTileDidFail = !@appendTile(index)
-      if index >= @getTotalItems() || appendTileDidFail
-        break;
+    if last > @lastAppendedIndex
+      for index in [@lastAppendedIndex + 1...last]
+        appendTileDidFail = !@appendTile()
+        if index >= @getTotalItems() || appendTileDidFail
+          break;
     
     @_endOfData() if index >= @getTotalItems() 
           
@@ -354,12 +355,13 @@ module.exports = class Tilegrid
     @collection?.getLength?() || @collection?.length || @data.length
 
 
-  appendTile: (index = @lastRenderedIndex + 1) =>
+  appendTile: () =>
+    index = @lastAppendedIndex + 1
     model = @getItemData(index)
     return false unless model?
-    @lastRenderedIndex = index
+    @lastAppendedIndex = index
     $tile = @_cloneTileTemplate(model, @options)
-    $tile.attr('data-index', index)
+    $tile.attr('data-index', @lastAppendedIndex)
     @$loadingIndicator.before $tile
     @renderTile($tile, model)
     return true
@@ -376,7 +378,6 @@ module.exports = class Tilegrid
 
 
   renderTile: ($tile, model) =>
-    return if $tile.hasClass('rendered')
     $tile.addClass("rendered")
 
     @_$tilesByModelId[model.id] = $tile
