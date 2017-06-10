@@ -37,7 +37,8 @@ module.exports = class TilegridReactTiles extends Tilegrid
   # extends - adds support for rendering react components
   _renderTileTemplate: ($tile, model) =>
     template = @_getTileTemplate($tile, model)
-    if @isReactTemplate(template)
+    template = template(model, $tile.attr('data-index')) if _.isFunction(template)
+    if @isReactTemplate(template) 
       # Model below is a react-datum Model class.  Tilegrid wraps react tile
       # components in a contextual model object for model associated with this tile
       element = React.createElement(RdModel, {'model': model}, template)

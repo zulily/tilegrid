@@ -31,6 +31,13 @@ module.exports = class TilegridComponent extends React.Component
 
     # see widgets.tilegrid.SingleSelect constructor
     tilegridSelectOptions: React.PropTypes.object
+    
+    # children can also be a function that is passed (model, index)
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.arrayOf(React.PropTypes.node),
+      React.PropTypes.node,
+      React.PropTypes.func
+    ])
 
 
   @defaultProps:

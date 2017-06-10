@@ -799,7 +799,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    tilegridClass: React.PropTypes.func,
 	    tilegridOptions: React.PropTypes.object,
 	    tilegridSelectionClass: React.PropTypes.func,
-	    tilegridSelectOptions: React.PropTypes.object
+	    tilegridSelectOptions: React.PropTypes.object,
+	    children: React.PropTypes.oneOfType([React.PropTypes.arrayOf(React.PropTypes.node), React.PropTypes.node, React.PropTypes.func])
 	  };
 
 	  TilegridComponent.defaultProps = {
@@ -927,6 +928,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  TilegridReactTiles.prototype._renderTileTemplate = function($tile, model) {
 	    var element, template;
 	    template = this._getTileTemplate($tile, model);
+	    if (_.isFunction(template)) {
+	      template = template(model, $tile.attr('data-index'));
+	    }
 	    if (this.isReactTemplate(template)) {
 	      element = React.createElement(RdModel, {
 	        'model': model
