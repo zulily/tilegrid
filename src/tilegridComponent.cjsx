@@ -72,7 +72,7 @@ module.exports = class TilegridComponent extends React.Component
 
 
   componentWillReceiveProps: ->
-    @tilegrid.refresh()    # rerenders all rendered tiles
+    # @tilegrid.refresh()    # rerenders all rendered tiles
 
 
   _getTileTemplate: ->

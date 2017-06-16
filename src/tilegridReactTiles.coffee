@@ -36,8 +36,10 @@ module.exports = class TilegridReactTiles extends Tilegrid
 
   # extends - adds support for rendering react components
   _renderTileTemplate: ($tile, model) =>
+    index = parseInt($tile.attr('data-index'))
+    index = 0 if _.isNaN(index)
     template = @_getTileTemplate($tile, model)
-    template = template(model, $tile.attr('data-index')) if _.isFunction(template)
+    template = template(model, index) if _.isFunction(template)
     if @isReactTemplate(template) 
       # Model below is a react-datum Model class.  Tilegrid wraps react tile
       # components in a contextual model object for model associated with this tile
@@ -49,20 +51,22 @@ module.exports = class TilegridReactTiles extends Tilegrid
 
   # extends super - need to unmount react model
   _renderDerenderedPlaceholder: ($tile) =>
-    ReactDom.unmountComponentAtNode($tile[0]) if @isReactTemplate()
+    template = @_getTileTemplate()
+    ReactDom.unmountComponentAtNode($tile[0]) if @isReactTemplate(template) || _.isFunction(template)
     super
 
 
-  # overrides - returns unmutilated @$tileTemplate
+  # overrides - returns unmutilated / unjqueried @tileTemplate
   _getTileTemplate: ($tile, model) =>
-    return @$tileTemplate
+    return @tileTemplate
 
 
   # override - normally returns a @$tileTemplate.clone()
   _cloneTileTemplate: (model, options = {}) =>
+    template = @_getTileTemplate()
     # this needs to return a jquery element - it's what get's pushed into the grid and our
     # reactive tile will render into it
-    if @isReactTemplate()
+    if @isReactTemplate(template) || _.isFunction(template)
       classNames = if (options.tileWrapperClassNames? && (typeof options.tileWrapperClassNames == "function")) then options.tileWrapperClassNames(model) else ""
       return $("<div class='tile #{classNames}'></div>")
     else

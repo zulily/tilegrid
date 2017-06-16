@@ -104,10 +104,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    tileTemplate    - can be a selector, jquery obj or html
 	   */
 
-	  function Tilegrid(selector, data, tileTemplate1, options) {
+	  function Tilegrid(selector, data, tileTemplate, options) {
 	    this.selector = selector;
 	    this.data = data;
-	    this.tileTemplate = tileTemplate1;
 	    if (options == null) {
 	      options = {};
 	    }
@@ -165,7 +164,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      hideFunction: null,
 	      tileWrapperClassNames: ""
 	    });
-	    this.setTileTemplate(this.tileTemplate);
+	    this.setTileTemplate(tileTemplate);
 	    if (!(_.isArray(this.data) || this.data instanceof Backbone.Collection)) {
 	      throw "Tilegrid expects @data constructor arg to be either and array or a Collection";
 	    }
@@ -244,8 +243,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  };
 
-	  Tilegrid.prototype.setTileTemplate = function(tileTemplate) {
-	    this.$tileTemplate = $(tileTemplate);
+	  Tilegrid.prototype.setTileTemplate = function(tileTemplate1) {
+	    this.tileTemplate = tileTemplate1;
+	    this.$tileTemplate = $(this.tileTemplate);
 	    if (this.$tileTemplate.length <= 0) {
 	      throw "dev error: Invalid template in TileGrid construction:<br>" + tileTemplate;
 	    }
@@ -835,9 +835,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return this.tilegrid.destroy();
 	  };
 
-	  TilegridComponent.prototype.componentWillReceiveProps = function() {
-	    return this.tilegrid.refresh();
-	  };
+	  TilegridComponent.prototype.componentWillReceiveProps = function() {};
 
 	  TilegridComponent.prototype._getTileTemplate = function() {
 	    return this.props.tileTemplate || this._findTileChild();
@@ -926,10 +924,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  TilegridReactTiles.prototype._renderTileTemplate = function($tile, model) {
-	    var element, template;
+	    var element, index, template;
+	    index = parseInt($tile.attr('data-index'));
+	    if (_.isNaN(index)) {
+	      index = 0;
+	    }
 	    template = this._getTileTemplate($tile, model);
 	    if (_.isFunction(template)) {
-	      template = template(model, $tile.attr('data-index'));
+	      template = template(model, index);
 	    }
 	    if (this.isReactTemplate(template)) {
 	      element = React.createElement(RdModel, {
@@ -942,22 +944,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  TilegridReactTiles.prototype._renderDerenderedPlaceholder = function($tile) {
-	    if (this.isReactTemplate()) {
+	    var template;
+	    template = this._getTileTemplate();
+	    if (this.isReactTemplate(template) || _.isFunction(template)) {
 	      ReactDom.unmountComponentAtNode($tile[0]);
 	    }
 	    return TilegridReactTiles.__super__._renderDerenderedPlaceholder.apply(this, arguments);
 	  };
 
 	  TilegridReactTiles.prototype._getTileTemplate = function($tile, model) {
-	    return this.$tileTemplate;
+	    return this.tileTemplate;
 	  };
 
 	  TilegridReactTiles.prototype._cloneTileTemplate = function(model, options) {
-	    var classNames;
+	    var classNames, template;
 	    if (options == null) {
 	      options = {};
 	    }
-	    if (this.isReactTemplate()) {
+	    template = this._getTileTemplate();
+	    if (this.isReactTemplate(template) || _.isFunction(template)) {
 	      classNames = (options.tileWrapperClassNames != null) && (typeof options.tileWrapperClassNames === "function") ? options.tileWrapperClassNames(model) : "";
 	      return $("<div class='tile " + classNames + "'></div>");
 	    } else {

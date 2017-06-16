@@ -23,7 +23,7 @@ module.exports = class Tilegrid
     data            - can be an array or a Collection child
     tileTemplate    - can be a selector, jquery obj or html
   ###
-  constructor: (@selector, @data, @tileTemplate, options={}) ->
+  constructor: (@selector, @data, tileTemplate, options={}) ->
     
     @options = _.defaults options,
       # you can specify an alternate page size, this will control how many tiles are rendered per
@@ -41,7 +41,7 @@ module.exports = class Tilegrid
       # This can be a function or a class name
       tileWrapperClassNames: ""
 
-    @setTileTemplate(@tileTemplate)
+    @setTileTemplate(tileTemplate)
 
     # you can pass in an array of objects or models instead of a collection
     unless _.isArray(@data) || @data instanceof Backbone.Collection
@@ -112,8 +112,8 @@ module.exports = class Tilegrid
       _.delay( (=> @$tilegrid.focus()), 100)  # so you can scroll with the keyboard when it gets' focus
 
 
-  setTileTemplate: (tileTemplate) =>
-    @$tileTemplate = $(tileTemplate)
+  setTileTemplate: (@tileTemplate) =>
+    @$tileTemplate = $(@tileTemplate)
     if @$tileTemplate.length <= 0
       throw "dev error: Invalid template in TileGrid construction:<br>#{tileTemplate}"
 
