@@ -428,7 +428,6 @@ module.exports = class Tilegrid
 
   _endOfData: (options={}) =>
     @$loadingIndicator.hide()
-    @debouncedRefresh()
 
 
   # returns true if loading indicator is visible or nearly

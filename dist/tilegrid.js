@@ -640,8 +640,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (options == null) {
 	      options = {};
 	    }
-	    this.$loadingIndicator.hide();
-	    return this.debouncedRefresh();
+	    return this.$loadingIndicator.hide();
 	  };
 
 	  Tilegrid.prototype._loadingInWindow = function() {
