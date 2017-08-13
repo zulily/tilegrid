@@ -323,7 +323,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.$element.html(this.$tilegrid);
 	    this.$loadingIndicator = this.$element.find('.tilegrid-loading');
 	    if (!this.options.ignoreViewport) {
-	      this._debouncedOnScroll = _.debounce(this._onScroll, 100);
+	      this._debouncedOnScroll = _.debounce(this._onScroll, 500);
 	      this._debouncedOnResize = _.debounce(this._onResize, 100);
 	      this.$tilegrid.on('scroll', this._debouncedOnScroll);
 	      this.$tilegrid.on('resize', this._debouncedOnResize);
@@ -545,8 +545,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    if (last > this.lastAppendedIndex) {
 	      for (index = i = ref = this.lastAppendedIndex + 1, ref1 = last; ref <= ref1 ? i < ref1 : i > ref1; index = ref <= ref1 ? ++i : --i) {
+	        if (index >= this.getTotalItems()) {
+	          break;
+	        }
 	        appendTileDidFail = !this.appendTile();
-	        if (index >= this.getTotalItems() || appendTileDidFail) {
+	        if (appendTileDidFail) {
 	          break;
 	        }
 	      }
@@ -906,7 +909,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  TilegridReactTiles.prototype.setTileTemplate = function(tileTemplate) {
 	    if (this.isReactTemplate(tileTemplate)) {
-	      return this.$tileTemplate = tileTemplate;
+	      return this.tileTemplate = tileTemplate;
 	    } else {
 	      return TilegridReactTiles.__super__.setTileTemplate.apply(this, arguments);
 	    }

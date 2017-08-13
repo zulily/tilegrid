@@ -22,7 +22,7 @@ module.exports = class TilegridReactTiles extends Tilegrid
   # extends - adds support for rendering react components
   setTileTemplate: (tileTemplate) =>
     if @isReactTemplate(tileTemplate)
-      @$tileTemplate = tileTemplate
+      @tileTemplate = tileTemplate
     else
       super    # super will try to coerce tileTemplate into a jQuery object
 

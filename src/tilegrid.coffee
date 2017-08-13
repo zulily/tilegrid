@@ -175,7 +175,7 @@ module.exports = class Tilegrid
     @$loadingIndicator = @$element.find('.tilegrid-loading')
 
     unless @options.ignoreViewport
-      @_debouncedOnScroll = _.debounce @_onScroll, 100
+      @_debouncedOnScroll = _.debounce @_onScroll, 500
       @_debouncedOnResize = _.debounce @_onResize, 100
       @$tilegrid.on 'scroll', @_debouncedOnScroll
       @$tilegrid.on 'resize', @_debouncedOnResize
@@ -341,9 +341,9 @@ module.exports = class Tilegrid
   _onEnsureComplete: (first, last, options={}) =>
     if last > @lastAppendedIndex
       for index in [@lastAppendedIndex + 1...last]
+        break if index >= @getTotalItems()
         appendTileDidFail = !@appendTile()
-        if index >= @getTotalItems() || appendTileDidFail
-          break;
+        break if appendTileDidFail
     
     @_endOfData() if index >= @getTotalItems() 
           
