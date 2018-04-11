@@ -1,6 +1,6 @@
-var jQueryTilegrid = require('./src/tilegrid')
-var ReactTilegrid = require('./src/tilegridComponent')
-var MultiSelect = require('./src/multiSelect')
+var jQueryTilegrid = require('./lib/tilegrid')
+var ReactTilegrid = require('./lib/tilegridComponent')
+var MultiSelect = require('./lib/multiSelect')
 
 if(!(window == null)){
   window.jQueryTilegrid = jQueryTilegrid;
@@ -13,3 +13,4 @@ module.exports = {
   ReactTilegrid:     ReactTilegrid,
   MultiSelect:     MultiSelect
 }
+

@@ -1,12 +1,12 @@
 
-React = require('react')
+React = require('./lib/reactLegacy')
 ReactDom = require('react-dom')
 $ = jQuery = require('jquery')
 
 Tilegrid = require('./tilegrid')
 
-# react datum model rerenders our tiles when the model changes and provides the context 'model'
-RdModel = require('react-datum/src/model')
+# ModelWatcher 
+ModelWatcher = require('./lib/modelWatcher')
 
 ###
   this extension of the jquery tilegrid allows the use of ReactComponents as the tile template.
@@ -41,9 +41,10 @@ module.exports = class TilegridReactTiles extends Tilegrid
     template = @_getTileTemplate($tile, model)
     template = template(model, index) if _.isFunction(template)
     if @isReactTemplate(template) 
-      # Model below is a react-datum Model class.  Tilegrid wraps react tile
-      # components in a contextual model object for model associated with this tile
-      element = React.createElement(RdModel, {'model': model}, template)
+      # Tilegrid wraps react tile components in a component that watches the 
+      # model for changes and rerenders the tiles.  The model is also made
+      # available to the tiles as a context parameter
+      element = React.createElement(ModelWatcher, {'model': model}, template)
       ReactDom.render(element, $tile[0])
     else
       super

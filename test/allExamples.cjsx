@@ -1,6 +1,6 @@
 React = require 'react'
 ReactDOM = require 'react-dom'
-ReactTest = require 'react-addons-test-utils'
+ReactTest = require 'react-dom/test-utils'
 Backbone = require 'backbone'
 ReactDatum = require 'react-datum'
 $ = require 'jquery'
@@ -10,7 +10,14 @@ Th = require './lib/testHelpers'
 ReactTilegrid = require '../src/tilegridComponent'
 
 TestExamples = require('bumble-test/testExamples')
-testExamples = new TestExamples()
+
+options = 
+  verbose: true
+  addScripts: [
+    'node_modules/react-datum/dist/react-datum.js'
+  ]
+
+testExamples = new TestExamples(options)
 
 KITTEN_DATA = require './lib/kittenData'
 # the examples expect these to be script tagged in and be available globally

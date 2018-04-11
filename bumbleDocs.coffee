@@ -22,7 +22,7 @@ module.exports =
   apiDocs: {
     sections: [{
       label: "Tilegrid" 
-      path: "src/datums/**/*"
+      path: "src/**/*"
     }]
   }
 

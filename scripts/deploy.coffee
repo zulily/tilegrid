@@ -10,7 +10,7 @@ util = require 'bumble-util'
   This script is run from grunt as part of the build process.
 
   - checks to see if you are also developing on zuKeeper by presence of ../htdocs_ems. If found...
-  - copies dist/react-datum.js and dist/react-datum.min.js distro files to
+  - copies dist/tilegrid.js and dist/tilegrid.min.js distro files to
    ../htdocs_ems/app/webroot/js/lib
   - attempts to scp the two distro files to your VPS at /var/www/htdocs/zulily-event-management
 
@@ -20,8 +20,6 @@ util = require 'bumble-util'
 
 ###
 
-# if you used `cake react-datum` from zuKeeper root, it recorded it's resolved directory
-# to a file which should be most reliable
 try
   savedZukeeperRoot = fs.readFileSync('.zukeeperRoot').toString()
 catch
@@ -42,4 +40,7 @@ zkLocalDir = path.join(zkSrcDir, zkRelativeDir)
 zkRemoteDir = "#{vps}:#{path.join(zkRemoteRoot, zkRelativeDir)}"
 
 util.systemCmd "cp -f #{srcs} #{zkLocalDir}"
-util.systemCmd "scp #{srcs} #{vps}:/var/www/htdocs/zulily-event-management/app/webroot/js/lib"
+util.systemCmd "scp #{srcs} #{vps}:/var/www/htdocs/zulily-event-management/app/webroot/js/lib",
+  failOnError: false
+  showOutput: false
+  

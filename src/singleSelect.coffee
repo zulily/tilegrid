@@ -1,7 +1,7 @@
 
 _ = require('underscore')
 $ = jQuery = require('jquery')
-SelectableCollection = require('selectable-collection/src/selectableCollection')
+SelectableCollection = require('selectable-collection/src/selectableCollection.coffee')
 
 require('./lib/jqueryHelpers')
 

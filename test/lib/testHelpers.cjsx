@@ -3,9 +3,9 @@
   that out, React methods
 ###
 
-React = require 'react'
+React = require '../../src/lib/reactLegacy'
 ReactDOM = require 'react-dom'
-ReactTest = require 'react-addons-test-utils'
+ReactTest = require 'react-dom/test-utils'
 
 ###
   leave this in here so tests can be debugged using node-inspector using
