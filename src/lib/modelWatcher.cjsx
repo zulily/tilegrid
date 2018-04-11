@@ -4,7 +4,7 @@ React = require('./reactLegacy')
 _ = require('underscore')
 
 ###
-  This was stolen from react-datum
+  This was stolen from react-datum  ContextualData component
 ###  
 module.exports = class ModelWatcher extends React.Component
   @displayName: "ModelWatcher"
@@ -28,6 +28,15 @@ module.exports = class ModelWatcher extends React.Component
     debug: React.PropTypes.bool
     # style override object for the rendered div.
     style: React.PropTypes.object
+    
+    
+  @childContextTypes:
+    model: React.PropTypes.object
+    
+  @contextTypes:
+    model: React.PropTypes.object
+  
+  
 
   
   # extend these the same was as above or just replace them

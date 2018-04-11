@@ -42,6 +42,8 @@ module.exports = (grunt) ->
     # args to initConfig method are the tasks
     clean:
       distrib: ["dist/#{pkg.name}.*"]
+      lib: ["lib/*"]
+      docsVendorLibs: ["docs/vendor/*"]
 
     copy:
       docVendorLibs: 
@@ -130,7 +132,7 @@ module.exports = (grunt) ->
   # tasks
   grunt.registerTask 'test', ["shell:test", "shell:coverage"]
   grunt.registerTask 'distrib', ['cssmin:distrib', 'webpack:distrib', 'webpack:optimize','shell:deploy']
-  grunt.registerTask 'docs',  ['copy:docVendorLibs', 'shell:buildDocIndex', 'shell:buildApiDocs', 'shell:buildExamples']
+  grunt.registerTask 'docs',  ['clean:docsVendorLibs', 'copy:docVendorLibs', 'shell:buildDocIndex', 'shell:buildApiDocs', 'shell:buildExamples']
   grunt.registerTask 'build', ['npmInstall', 'newer:cjsx:build', 'distrib', 'docs']
   grunt.registerTask 'default', ['availabletasks']
   

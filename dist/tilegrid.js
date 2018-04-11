@@ -426,9 +426,9 @@ module.exports = ReactPropTypesSecret;
   var $,
       Backbone,
       Tilegrid,
-      jQuery,
       _,
-      __bind = function __bind(fn, me) {
+      jQuery,
+      bind = function bind(fn, me) {
     return function () {
       return fn.apply(me, arguments);
     };
@@ -457,53 +457,53 @@ module.exports = ReactPropTypesSecret;
       if (options == null) {
         options = {};
       }
-      this._renderDerenderedPlaceholder = __bind(this._renderDerenderedPlaceholder, this);
-      this._derenderTile = __bind(this._derenderTile, this);
-      this._derenderOutsideTiles = __bind(this._derenderOutsideTiles, this);
-      this._onTileGridClick = __bind(this._onTileGridClick, this);
-      this._onResize = __bind(this._onResize, this);
-      this._onScroll = __bind(this._onScroll, this);
-      this._onModelRemove = __bind(this._onModelRemove, this);
-      this._onCollectionAdd = __bind(this._onCollectionAdd, this);
-      this._onCollectionReset = __bind(this._onCollectionReset, this);
-      this._loadingInWindow = __bind(this._loadingInWindow, this);
-      this._endOfData = __bind(this._endOfData, this);
-      this.tileFor = __bind(this.tileFor, this);
-      this.findTileAt = __bind(this.findTileAt, this);
-      this.tileAt = __bind(this.tileAt, this);
-      this._getTileTemplate = __bind(this._getTileTemplate, this);
-      this._renderTileTemplate = __bind(this._renderTileTemplate, this);
-      this.renderTile = __bind(this.renderTile, this);
-      this.renderTileAt = __bind(this.renderTileAt, this);
-      this._cloneTileTemplate = __bind(this._cloneTileTemplate, this);
-      this.appendTile = __bind(this.appendTile, this);
-      this.getTotalItems = __bind(this.getTotalItems, this);
-      this._onEnsureComplete = __bind(this._onEnsureComplete, this);
-      this._renderNextPage = __bind(this._renderNextPage, this);
-      this.renderAllTiles = __bind(this.renderAllTiles, this);
-      this._isInViewPort = __bind(this._isInViewPort, this);
-      this._findTileInViewport = __bind(this._findTileInViewport, this);
-      this._getTileDims = __bind(this._getTileDims, this);
-      this._getGridScrollDims = __bind(this._getGridScrollDims, this);
-      this.getViewingStats = __bind(this.getViewingStats, this);
-      this.getItemData = __bind(this.getItemData, this);
-      this._onEnsureRowsComplete = __bind(this._onEnsureRowsComplete, this);
-      this._ensureViewport = __bind(this._ensureViewport, this);
-      this._renderViewport = __bind(this._renderViewport, this);
-      this._renderGrid = __bind(this._renderGrid, this);
-      this._initializeCollection = __bind(this._initializeCollection, this);
-      this.updateCollectionViewStats = __bind(this.updateCollectionViewStats, this);
-      this.getRenderedTiles = __bind(this.getRenderedTiles, this);
-      this.setActiveTileFor = __bind(this.setActiveTileFor, this);
-      this.setActiveTile = __bind(this.setActiveTile, this);
-      this.getActiveTile = __bind(this.getActiveTile, this);
-      this.setTileTemplate = __bind(this.setTileTemplate, this);
-      this.focus = __bind(this.focus, this);
-      this.render = __bind(this.render, this);
-      this.refresh = __bind(this.refresh, this);
-      this.reset = __bind(this.reset, this);
-      this.destroy = __bind(this.destroy, this);
-      this.initialize = __bind(this.initialize, this);
+      this._renderDerenderedPlaceholder = bind(this._renderDerenderedPlaceholder, this);
+      this._derenderTile = bind(this._derenderTile, this);
+      this._derenderOutsideTiles = bind(this._derenderOutsideTiles, this);
+      this._onTileGridClick = bind(this._onTileGridClick, this);
+      this._onResize = bind(this._onResize, this);
+      this._onScroll = bind(this._onScroll, this);
+      this._onModelRemove = bind(this._onModelRemove, this);
+      this._onCollectionAdd = bind(this._onCollectionAdd, this);
+      this._onCollectionReset = bind(this._onCollectionReset, this);
+      this._loadingInWindow = bind(this._loadingInWindow, this);
+      this._endOfData = bind(this._endOfData, this);
+      this.tileFor = bind(this.tileFor, this);
+      this.findTileAt = bind(this.findTileAt, this);
+      this.tileAt = bind(this.tileAt, this);
+      this._getTileTemplate = bind(this._getTileTemplate, this);
+      this._renderTileTemplate = bind(this._renderTileTemplate, this);
+      this.renderTile = bind(this.renderTile, this);
+      this.renderTileAt = bind(this.renderTileAt, this);
+      this._cloneTileTemplate = bind(this._cloneTileTemplate, this);
+      this.appendTile = bind(this.appendTile, this);
+      this.getTotalItems = bind(this.getTotalItems, this);
+      this._onEnsureComplete = bind(this._onEnsureComplete, this);
+      this._renderNextPage = bind(this._renderNextPage, this);
+      this.renderAllTiles = bind(this.renderAllTiles, this);
+      this._isInViewPort = bind(this._isInViewPort, this);
+      this._findTileInViewport = bind(this._findTileInViewport, this);
+      this._getTileDims = bind(this._getTileDims, this);
+      this._getGridScrollDims = bind(this._getGridScrollDims, this);
+      this.getViewingStats = bind(this.getViewingStats, this);
+      this.getItemData = bind(this.getItemData, this);
+      this._onEnsureRowsComplete = bind(this._onEnsureRowsComplete, this);
+      this._ensureViewport = bind(this._ensureViewport, this);
+      this._renderViewport = bind(this._renderViewport, this);
+      this._renderGrid = bind(this._renderGrid, this);
+      this._initializeCollection = bind(this._initializeCollection, this);
+      this.updateCollectionViewStats = bind(this.updateCollectionViewStats, this);
+      this.getRenderedTiles = bind(this.getRenderedTiles, this);
+      this.setActiveTileFor = bind(this.setActiveTileFor, this);
+      this.setActiveTile = bind(this.setActiveTile, this);
+      this.getActiveTile = bind(this.getActiveTile, this);
+      this.setTileTemplate = bind(this.setTileTemplate, this);
+      this.focus = bind(this.focus, this);
+      this.render = bind(this.render, this);
+      this.refresh = bind(this.refresh, this);
+      this.reset = bind(this.reset, this);
+      this.destroy = bind(this.destroy, this);
+      this.initialize = bind(this.initialize, this);
       this.options = _.defaults(options, {
         pageSize: 50,
         preloadCushion: 400,
@@ -521,26 +521,26 @@ module.exports = ReactPropTypesSecret;
     }
 
     Tilegrid.prototype.initialize = function () {
-      var _ref, _ref1;
+      var ref, ref1;
       this.$element = $(this.selector);
       _.extend(this, Backbone.Events);
-      if (!(((_ref = this.$element) != null ? _ref.length : void 0) > 0)) {
+      if (!(((ref = this.$element) != null ? ref.length : void 0) > 0)) {
         throw "Dev: error: " + this.$element.selector + " not found in DOM";
       }
       this._initializeCollection();
       this._renderGrid();
       this.reset();
       this.render();
-      return (_ref1 = this.$tilegrid) != null ? _ref1.data('tilegrid', this) : void 0;
+      return (ref1 = this.$tilegrid) != null ? ref1.data('tilegrid', this) : void 0;
     };
 
     Tilegrid.prototype.destroy = function () {
-      var _ref;
-      return (_ref = this.$tilegrid) != null ? _ref.data('tilegrid', null) : void 0;
+      var ref;
+      return (ref = this.$tilegrid) != null ? ref.data('tilegrid', null) : void 0;
     };
 
     Tilegrid.prototype.reset = function (options) {
-      var tileEl, totalItems, _i, _len, _ref;
+      var i, len, ref, tileEl, totalItems;
       if (options == null) {
         options = {};
       }
@@ -549,9 +549,9 @@ module.exports = ReactPropTypesSecret;
       });
       this._$tilesByModelId = {};
       if (options.soft) {
-        _ref = this.$element.find('.tile');
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          tileEl = _ref[_i];
+        ref = this.$element.find('.tile');
+        for (i = 0, len = ref.length; i < len; i++) {
+          tileEl = ref[i];
           this._derenderTile($(tileEl));
         }
       } else {
@@ -578,9 +578,9 @@ module.exports = ReactPropTypesSecret;
     };
 
     Tilegrid.prototype.focus = function () {
-      var _base;
+      var base;
       if (this.selections != null) {
-        return typeof (_base = this.selections).focus === "function" ? _base.focus() : void 0;
+        return typeof (base = this.selections).focus === "function" ? base.focus() : void 0;
       } else {
         return _.delay(function (_this) {
           return function () {
@@ -590,8 +590,8 @@ module.exports = ReactPropTypesSecret;
       }
     };
 
-    Tilegrid.prototype.setTileTemplate = function (tileTemplate) {
-      this.tileTemplate = tileTemplate;
+    Tilegrid.prototype.setTileTemplate = function (tileTemplate1) {
+      this.tileTemplate = tileTemplate1;
       this.$tileTemplate = $(this.tileTemplate);
       if (this.$tileTemplate.length <= 0) {
         throw "dev error: Invalid template in TileGrid construction:<br>" + tileTemplate;
@@ -599,17 +599,17 @@ module.exports = ReactPropTypesSecret;
     };
 
     Tilegrid.prototype.getActiveTile = function () {
-      var _ref;
-      return (_ref = this.selections) != null ? typeof _ref.getActiveTile === "function" ? _ref.getActiveTile() : void 0 : void 0;
+      var ref;
+      return (ref = this.selections) != null ? typeof ref.getActiveTile === "function" ? ref.getActiveTile() : void 0 : void 0;
     };
 
     Tilegrid.prototype.setActiveTile = function (index) {
-      var _ref;
-      return (_ref = this.selections) != null ? typeof _ref.setActiveTile === "function" ? _ref.setActiveTile(index) : void 0 : void 0;
+      var ref;
+      return (ref = this.selections) != null ? typeof ref.setActiveTile === "function" ? ref.setActiveTile(index) : void 0 : void 0;
     };
 
     Tilegrid.prototype.setActiveTileFor = function (model) {
-      var $tile, index, _ref;
+      var $tile, index, ref;
       if (model == null) {
         return null;
       }
@@ -621,8 +621,8 @@ module.exports = ReactPropTypesSecret;
       if (index == null) {
         throw "dev: unexpected: tile for model " + model.id + " has no index attribute";
       }
-      if ((_ref = this.selections) != null) {
-        _ref.setActiveTile(index);
+      if ((ref = this.selections) != null) {
+        ref.setActiveTile(index);
       }
       return $tile;
     };
@@ -632,7 +632,7 @@ module.exports = ReactPropTypesSecret;
     };
 
     Tilegrid.prototype.updateCollectionViewStats = function (stats) {
-      var totalRows, _base;
+      var base, totalRows;
       if (this.collection == null) {
         return;
       }
@@ -648,7 +648,7 @@ module.exports = ReactPropTypesSecret;
       } else {
         this.collection.topDisplayIndex = stats.topDisplayIndex;
         this.collection.bottomDisplayIndex = stats.bottomDisplayIndex;
-        return typeof (_base = this.collection).trigger === "function" ? _base.trigger('viewStatsChanged') : void 0;
+        return typeof (base = this.collection).trigger === "function" ? base.trigger('viewStatsChanged') : void 0;
       }
     };
 
@@ -749,10 +749,10 @@ module.exports = ReactPropTypesSecret;
     };
 
     Tilegrid.prototype.getItemData = function (index) {
-      var _ref, _ref1;
-      return ((_ref = this.collection) != null ? typeof _ref.getItem === "function" ? _ref.getItem(index, {
+      var ref, ref1;
+      return ((ref = this.collection) != null ? typeof ref.getItem === "function" ? ref.getItem(index, {
         warn: true
-      }) : void 0 : void 0) || ((_ref1 = this.collection) != null ? _ref1.models[index] : void 0) || this.data[index];
+      }) : void 0 : void 0) || ((ref1 = this.collection) != null ? ref1.models[index] : void 0) || this.data[index];
     };
 
     Tilegrid.prototype.getViewingStats = function () {
@@ -854,18 +854,18 @@ module.exports = ReactPropTypesSecret;
     };
 
     Tilegrid.prototype.renderAllTiles = function (options) {
-      var model, _i, _len, _ref, _ref1, _results;
+      var i, len, model, ref, ref1, results;
       if (options == null) {
         options = {};
       }
       this.lastAppendedIndex = -1;
-      _ref1 = ((_ref = this.collection) != null ? _ref.models : void 0) || this.data;
-      _results = [];
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        model = _ref1[_i];
-        _results.push(this.appendTile());
+      ref1 = ((ref = this.collection) != null ? ref.models : void 0) || this.data;
+      results = [];
+      for (i = 0, len = ref1.length; i < len; i++) {
+        model = ref1[i];
+        results.push(this.appendTile());
       }
-      return _results;
+      return results;
     };
 
     Tilegrid.prototype._renderNextPage = function (options) {
@@ -886,12 +886,12 @@ module.exports = ReactPropTypesSecret;
     };
 
     Tilegrid.prototype._onEnsureComplete = function (first, last, options) {
-      var appendTileDidFail, index, _i, _ref;
+      var appendTileDidFail, i, index, ref, ref1;
       if (options == null) {
         options = {};
       }
       if (last > this.lastAppendedIndex) {
-        for (index = _i = _ref = this.lastAppendedIndex + 1; _ref <= last ? _i < last : _i > last; index = _ref <= last ? ++_i : --_i) {
+        for (index = i = ref = this.lastAppendedIndex + 1, ref1 = last; ref <= ref1 ? i < ref1 : i > ref1; index = ref <= ref1 ? ++i : --i) {
           if (index >= this.getTotalItems()) {
             break;
           }
@@ -908,11 +908,11 @@ module.exports = ReactPropTypesSecret;
     };
 
     Tilegrid.prototype.getTotalItems = function () {
-      var _ref, _ref1;
+      var ref, ref1;
       if (this.collection == null) {
         return 0;
       }
-      return ((_ref = this.collection) != null ? typeof _ref.getLength === "function" ? _ref.getLength() : void 0 : void 0) || ((_ref1 = this.collection) != null ? _ref1.length : void 0) || this.data.length;
+      return ((ref = this.collection) != null ? typeof ref.getLength === "function" ? ref.getLength() : void 0 : void 0) || ((ref1 = this.collection) != null ? ref1.length : void 0) || this.data.length;
     };
 
     Tilegrid.prototype.appendTile = function () {
@@ -1046,12 +1046,12 @@ module.exports = ReactPropTypesSecret;
     };
 
     Tilegrid.prototype._derenderOutsideTiles = function (topTileIndex, bottomTileIndex) {
-      var $tile, bottomAcceptable, index, numInView, tile, topAcceptable, _i, _len, _ref, _results;
+      var $tile, bottomAcceptable, i, index, len, numInView, ref, results, tile, topAcceptable;
       numInView = bottomTileIndex - topTileIndex;
-      _ref = this.$element.find('.tile.rendered');
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        tile = _ref[_i];
+      ref = this.$element.find('.tile.rendered');
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        tile = ref[i];
         $tile = $(tile);
         index = $tile.data('index');
         topAcceptable = topTileIndex;
@@ -1059,9 +1059,9 @@ module.exports = ReactPropTypesSecret;
         if (index >= topAcceptable && index <= bottomAcceptable) {
           continue;
         }
-        _results.push(this._derenderTile($tile));
+        results.push(this._derenderTile($tile));
       }
-      return _results;
+      return results;
     };
 
     Tilegrid.prototype._derenderTile = function ($tile) {
@@ -1624,21 +1624,21 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_9__;
   var $,
       MultiSelect,
       SingleSelect,
-      jQuery,
       _,
-      __bind = function __bind(fn, me) {
+      jQuery,
+      bind = function bind(fn, me) {
     return function () {
       return fn.apply(me, arguments);
     };
   },
-      __hasProp = {}.hasOwnProperty,
-      __extends = function __extends(child, parent) {
+      extend = function extend(child, parent) {
     for (var key in parent) {
-      if (__hasProp.call(parent, key)) child[key] = parent[key];
+      if (hasProp.call(parent, key)) child[key] = parent[key];
     }function ctor() {
       this.constructor = child;
     }ctor.prototype = parent.prototype;child.prototype = new ctor();child.__super__ = parent.prototype;return child;
-  };
+  },
+      hasProp = {}.hasOwnProperty;
 
   $ = jQuery = __webpack_require__(1);
 
@@ -1663,22 +1663,22 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_9__;
       new MultiSelect(@tilegrid)
    */
 
-  module.exports = MultiSelect = function (_super) {
-    __extends(MultiSelect, _super);
+  module.exports = MultiSelect = function (superClass) {
+    extend(MultiSelect, superClass);
 
     function MultiSelect() {
-      this._whichMethod = __bind(this._whichMethod, this);
-      this._onRightArrow = __bind(this._onRightArrow, this);
-      this._onLeftArrow = __bind(this._onLeftArrow, this);
-      this._onPageUp = __bind(this._onPageUp, this);
-      this._onPageDown = __bind(this._onPageDown, this);
-      this._onUpArrow = __bind(this._onUpArrow, this);
-      this._onDownArrow = __bind(this._onDownArrow, this);
-      this._onTileMouseMove = __bind(this._onTileMouseMove, this);
-      this._onTileMouseDown = __bind(this._onTileMouseDown, this);
-      this.selectExtend = __bind(this.selectExtend, this);
-      this._initializeDragSelect = __bind(this._initializeDragSelect, this);
-      this.initialize = __bind(this.initialize, this);
+      this._whichMethod = bind(this._whichMethod, this);
+      this._onRightArrow = bind(this._onRightArrow, this);
+      this._onLeftArrow = bind(this._onLeftArrow, this);
+      this._onPageUp = bind(this._onPageUp, this);
+      this._onPageDown = bind(this._onPageDown, this);
+      this._onUpArrow = bind(this._onUpArrow, this);
+      this._onDownArrow = bind(this._onDownArrow, this);
+      this._onTileMouseMove = bind(this._onTileMouseMove, this);
+      this._onTileMouseDown = bind(this._onTileMouseDown, this);
+      this.selectExtend = bind(this.selectExtend, this);
+      this._initializeDragSelect = bind(this._initializeDragSelect, this);
+      this.initialize = bind(this.initialize, this);
       MultiSelect.__super__.constructor.apply(this, arguments);
     }
 
@@ -2943,7 +2943,7 @@ module.exports = function() {
   _ = __webpack_require__(0);
 
   /*
-    This was stolen from react-datum
+    This was stolen from react-datum  ContextualData component
    */
 
   module.exports = ModelWatcher = function (superClass) {
@@ -2961,6 +2961,14 @@ module.exports = function() {
       debounceMs: React.PropTypes.number,
       debug: React.PropTypes.bool,
       style: React.PropTypes.object
+    };
+
+    ModelWatcher.childContextTypes = {
+      model: React.PropTypes.object
+    };
+
+    ModelWatcher.contextTypes = {
+      model: React.PropTypes.object
     };
 
     ModelWatcher.defaultProps = {
