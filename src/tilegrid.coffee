@@ -204,7 +204,7 @@ module.exports = class Tilegrid
     topIndex = viewStats.topDisplayIndex
     bottomIndex = viewStats.bottomDisplayIndex
 
-    return unless topIndex? && bottomIndex?
+    return unless topIndex? && bottomIndex? && (topIndex != 0 || bottomIndex != 0)
     @updateCollectionViewStats topDisplayIndex: topIndex + 1, bottomDisplayIndex: bottomIndex + 1
 
     @topRenderIndex = Math.max(topIndex - @options.pageSize, 0)
